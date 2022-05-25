@@ -16,8 +16,6 @@ You can install the package via composer:
 composer require l3aro/pipeline-query-collection
 ```
 
-You can publish and run the migrations with:
-
 You can publish the config file with:
 
 ```bash
@@ -28,14 +26,55 @@ This is the contents of the published config file:
 
 ```php
 return [
+    // key to detect param to filter
+    'detect_key' => env('PIPELINE_QUERY_COLLECTION_DETECT_KEY', 'filter'),
+
+    // type of postfix for date filters
+    'date_from_postfix' => env('PIPELINE_QUERY_COLLECTION_DATE_FROM_POSTFIX', 'from'),
+    'date_to_postfix' => env('PIPELINE_QUERY_COLLECTION_DATE_TO_POSTFIX', 'to'),
+
+    // default motion for date filters
+    'date_motion' => env('PIPELINE_QUERY_COLLECTION_DATE_MOTION', 'find'),
 ];
 ```
 
 ## Usage
 
+This package contains a collection of class that can be used with Laravel Pipeline.
+
+Let's see below queries
+
 ```php
-$pipelineQueryCollection = new Baro\PipelineQueryCollection();
-echo $pipelineQueryCollection->echoPhrase('Hello, Baro!');
+// ?name=Baro&is_admin=1&created_at_from=01-06-2022&created_at_to=30-06-2022
+$users = User::query()
+    ->when($request->name ?? null, function($query, $name) {
+        $query->where('name', 'like', "%$name%");
+    })
+    ->when($request->is_admin ?? null, function($query, $isAdmin) {
+        $query->where('is_admin', $isAdmin ? 1 : 0);
+    })
+    ->when($request->created_at_from ?? null, function($query, $date) {
+        $query->where('created_at', '>=', $date);
+    })
+    ->when($request->created_at_to ?? null, function($query, $date) {
+        $query->where('created_at', '<=', $date);
+    })
+    ->get();
+```
+
+As you all can see,  it's obviously that filters conditions will continue to grow as well as the duplication of same filter for other queries. We can use Laravel Pipeline combine with some pre-made queries to refactor this
+
+```php
+use Baro\PipelineQueryCollection;
+
+// ?name=Baro&is_admin=1&created_at_from=01-06-2022&created_at_to=30-06-2022
+$users = Users::query()->filter([
+    new PipelineQueryCollection\RelativeFilter('name'),
+    new PipelineQueryCollection\BooleanFilter('is_admin'),
+    new PipelineQueryCollection\DateFromFilter('created_at'),
+    new PipelineQueryCollection\DateToFilter('created_at'),
+])
+->get();
 ```
 
 ## Testing
