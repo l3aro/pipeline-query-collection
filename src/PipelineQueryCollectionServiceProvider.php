@@ -4,7 +4,6 @@ namespace Baro\PipelineQueryCollection;
 
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use Baro\PipelineQueryCollection\Commands\PipelineQueryCollectionCommand;
 
 class PipelineQueryCollectionServiceProvider extends PackageServiceProvider
 {
@@ -17,9 +16,6 @@ class PipelineQueryCollectionServiceProvider extends PackageServiceProvider
          */
         $package
             ->name('pipeline-query-collection')
-            ->hasConfigFile()
-            ->hasViews()
-            ->hasMigration('create_pipeline-query-collection_table')
-            ->hasCommand(PipelineQueryCollectionCommand::class);
+            ->hasConfigFile();
     }
 }
