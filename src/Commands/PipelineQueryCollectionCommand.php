@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton\Commands;
+namespace Baro\PipelineQueryCollection\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class PipelineQueryCollectionCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'pipeline-query-collection';
 
     public $description = 'My command';
 
