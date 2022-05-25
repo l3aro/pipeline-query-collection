@@ -8,10 +8,13 @@ class DateFromFilter extends BaseFilter
 {
     private $motion;
 
-    public function __construct($field = 'created_at', MotionEnum|string $motion = MotionEnum::FIND)
+    public function __construct($field = 'created_at', MotionEnum|string $motion = null)
     {
         parent::__construct();
         $this->field = $field;
+        if (is_null($motion)) {
+            $motion = config('pipeline-query-collection.date_motion');
+        }
         if (!$motion instanceof MotionEnum) {
             $motion = MotionEnum::from($motion);
         }
