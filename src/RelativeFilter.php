@@ -25,9 +25,9 @@ class RelativeFilter extends BaseFilter
     {
         $filterName = "{$this->detector}.{$this->field}";
         $toSearch = match ($this->wildcardPosition) {
-            RelativeWildcardPositionEnum::BOTH => "%{$this->field}%",
             RelativeWildcardPositionEnum::RIGHT => "{$this->field}%",
             RelativeWildcardPositionEnum::LEFT => "%{$this->field}",
+            default => "%{$this->field}%",
         };
         if ($this->shouldFilter($filterName)) {
             $query->where($this->field, 'like', $toSearch);
