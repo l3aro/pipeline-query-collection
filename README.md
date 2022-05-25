@@ -214,7 +214,7 @@ User::query()->filter([
 
 ## Testing
 
-I'm not familiar with testing while package development, so my testing function is not working yet. Any contribution are welcome!
+I'm not familiar with testing while package development, so my testing function is not working yet. Any contribution are welcomed!
 
 ## Changelog
 
