@@ -8,6 +8,7 @@ class ScopeFilter extends BaseFilter
 {
     public function __construct($scopeName)
     {
+        parent::__construct();
         $this->filterOn($scopeName);
     }
 

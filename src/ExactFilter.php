@@ -8,6 +8,7 @@ class ExactFilter extends BaseFilter
 {
     public function __construct($field)
     {
+        parent::__construct();
         $this->filterOn($field);
     }
 

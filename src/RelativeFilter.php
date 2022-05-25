@@ -11,6 +11,7 @@ class RelativeFilter extends BaseFilter
 
     public function __construct($field, RelativeWildcardPositionEnum|string $wildcardPosition = null)
     {
+        parent::__construct();
         $this->filterOn($field);
         if (is_null($wildcardPosition)) {
             $wildcardPosition = config('pipeline-query-collection.relative_wildcard_position');
