@@ -199,7 +199,7 @@ public function scopeSearch(Builder $query, string $keyword)
 use Baro\PipelineQueryCollection\ScopeFilter;
 
 User::query()->filter([
-    new ScopeFilter('name'), // where (`id` = 'Baro' or `name` like '%Baro%')
+    new ScopeFilter('search'), // where (`id` = 'Baro' or `name` like '%Baro%')
 ])
 ```
 #### Sort
