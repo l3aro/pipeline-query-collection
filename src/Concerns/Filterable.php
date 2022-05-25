@@ -13,6 +13,7 @@ trait Filterable
 
         return app(Pipeline::class)
             ->send($query)
-            ->through($criteria);
+            ->through($criteria)
+            ->thenReturn();
     }
 }
