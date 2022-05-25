@@ -2,22 +2,22 @@
 
 namespace Baro\PipelineQueryCollection;
 
-use Baro\PipelineQueryCollection\Enums\RelativeWildcardPositionEnum;
+use Baro\PipelineQueryCollection\Enums\WildcardPositionEnum;
 use Closure;
 
 class RelativeFilter extends BaseFilter
 {
     private $wildcardPosition;
 
-    public function __construct($field, RelativeWildcardPositionEnum|string $wildcardPosition = null)
+    public function __construct($field, WildcardPositionEnum|string $wildcardPosition = null)
     {
         parent::__construct();
         $this->filterOn($field);
         if (is_null($wildcardPosition)) {
             $wildcardPosition = config('pipeline-query-collection.relative_wildcard_position');
         }
-        if (! $wildcardPosition instanceof RelativeWildcardPositionEnum) {
-            $wildcardPosition = RelativeWildcardPositionEnum::from($wildcardPosition);
+        if (! $wildcardPosition instanceof WildcardPositionEnum) {
+            $wildcardPosition = WildcardPositionEnum::from($wildcardPosition);
         }
         $this->wildcardPosition = $wildcardPosition;
     }
@@ -26,8 +26,8 @@ class RelativeFilter extends BaseFilter
     {
         $filterName = "{$this->detector}{$this->field}";
         $toSearch = match ($this->wildcardPosition) {
-            RelativeWildcardPositionEnum::RIGHT => "{$this->field}%",
-            RelativeWildcardPositionEnum::LEFT => "%{$this->field}",
+            WildcardPositionEnum::RIGHT => "{$this->field}%",
+            WildcardPositionEnum::LEFT => "%{$this->field}",
             default => "%{$this->field}%",
         };
         if ($this->shouldFilter($filterName)) {

@@ -2,7 +2,7 @@
 
 namespace Baro\PipelineQueryCollection\Enums;
 
-enum RelativeWildcardPositionEnum: string
+enum WildcardPositionEnum: string
 {
     case BOTH = 'both';
     case LEFT = 'left';
