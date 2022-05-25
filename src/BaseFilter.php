@@ -18,24 +18,27 @@ abstract class BaseFilter
     public function filterOn(string $field)
     {
         $this->field = $field;
+
         return $this;
     }
 
     public function ignore(string $ignore = '')
     {
         $this->ignore = $ignore;
+
         return $this;
     }
 
     public function detectBy(string $detector)
     {
         $this->detector = $detector;
+
         return $this;
     }
 
     protected function shouldFilter(string $key)
     {
-        if (!request()->has($key)) {
+        if (! request()->has($key)) {
             return false;
         }
 

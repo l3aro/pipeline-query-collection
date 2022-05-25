@@ -16,7 +16,7 @@ class RelativeFilter extends BaseFilter
         if (is_null($wildcardPosition)) {
             $wildcardPosition = config('pipeline-query-collection.relative_wildcard_position');
         }
-        if (!$wildcardPosition instanceof RelativeWildcardPositionEnum) {
+        if (! $wildcardPosition instanceof RelativeWildcardPositionEnum) {
             $wildcardPosition = RelativeWildcardPositionEnum::from($wildcardPosition);
         }
         $this->wildcardPosition = $wildcardPosition;
@@ -33,6 +33,7 @@ class RelativeFilter extends BaseFilter
         if ($this->shouldFilter($filterName)) {
             $query->where($this->field, 'like', $toSearch);
         }
+
         return $next($query);
     }
 }

@@ -16,6 +16,7 @@ class BooleanFilter extends BaseFilter
         if ($this->shouldFilter($filterName)) {
             $query->where($this->field, request()->input($filterName) ? 1 : 0);
         }
+
         return $next($query);
     }
 }

@@ -14,11 +14,11 @@ class BitwiseFilter extends BaseFilter
     {
         $filterName = "{$this->detector}.{$this->field}";
         $toSearch = request()->input($filterName);
-        if (!$this->shouldFilter($filterName)) {
+        if (! $this->shouldFilter($filterName)) {
             return $next($query);
         }
 
-        if (!is_array($toSearch)) {
+        if (! is_array($toSearch)) {
             $toSearch = [$toSearch];
         }
 

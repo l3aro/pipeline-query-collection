@@ -15,7 +15,7 @@ class DateFromFilter extends BaseFilter
         if (is_null($motion)) {
             $motion = config('pipeline-query-collection.date_motion');
         }
-        if (!$motion instanceof MotionEnum) {
+        if (! $motion instanceof MotionEnum) {
             $motion = MotionEnum::from($motion);
         }
         $this->motion = $motion;
@@ -29,6 +29,7 @@ class DateFromFilter extends BaseFilter
             $operator = $this->motion === MotionEnum::FIND ? '>=' : '>';
             $query->where($this->field, $operator, request()->input($filterName));
         }
+
         return $next($query);
     }
 }

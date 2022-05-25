@@ -21,6 +21,7 @@ class RelationFilter extends BaseFilter
         $query->whereHas($this->relation, function ($query) use ($action, $toSearch) {
             $query->{$action}($this->field, $toSearch);
         });
+
         return $next($query);
     }
 }

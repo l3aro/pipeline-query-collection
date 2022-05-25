@@ -18,6 +18,7 @@ class ScopeFilter extends BaseFilter
         if ($this->shouldFilter($filterName)) {
             $query->{$this->field}(request()->input($filterName));
         }
+
         return $next($query);
     }
 }

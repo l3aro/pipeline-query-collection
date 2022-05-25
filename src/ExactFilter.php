@@ -18,6 +18,7 @@ class ExactFilter extends BaseFilter
         if ($this->shouldFilter($filterName)) {
             $query->where($this->field, request()->input($filterName));
         }
+
         return $next($query);
     }
 }

@@ -10,6 +10,7 @@ trait Sortable
     public function scopeSort(Builder $query, array $criteria = null): Builder
     {
         $criteria = is_null($criteria) ? $this->getSorts() : $criteria;
+
         return app(Pipeline::class)
             ->send($query)
             ->through($criteria);

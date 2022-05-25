@@ -10,6 +10,7 @@ trait Filterable
     public function scopeFilter(Builder $query, array $criteria = null): Builder
     {
         $criteria = is_null($criteria) ? $this->getFilters() : $criteria;
+
         return app(Pipeline::class)
             ->send($query)
             ->through($criteria);
