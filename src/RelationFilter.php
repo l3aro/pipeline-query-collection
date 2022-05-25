@@ -15,7 +15,7 @@ class RelationFilter extends BaseFilter
 
     public function handle($query, \Closure $next)
     {
-        $filterName = "{$this->detector}.{$this->relation}_{$this->field}";
+        $filterName = "{$this->detector}{$this->relation}_{$this->field}";
         $toSearch = request()->input($filterName);
         $action = is_array($toSearch) ? 'whereIn' : 'where';
         $query->whereHas($this->relation, function ($query) use ($action, $toSearch) {

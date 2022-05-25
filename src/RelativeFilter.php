@@ -24,7 +24,7 @@ class RelativeFilter extends BaseFilter
 
     public function handle($query, Closure $next)
     {
-        $filterName = "{$this->detector}.{$this->field}";
+        $filterName = "{$this->detector}{$this->field}";
         $toSearch = match ($this->wildcardPosition) {
             RelativeWildcardPositionEnum::RIGHT => "{$this->field}%",
             RelativeWildcardPositionEnum::LEFT => "%{$this->field}",

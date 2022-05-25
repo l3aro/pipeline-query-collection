@@ -24,7 +24,7 @@ class DateToFilter extends BaseFilter
     public function handle($query, \Closure $next)
     {
         $postfix = config('pipeline-query-collection.date_to_postfix');
-        $filterName = "{$this->detector}.{$this->field}{$postfix}";
+        $filterName = "{$this->detector}{$this->field}{$postfix}";
         if ($this->shouldFilter($filterName)) {
             $operator = $this->motion === MotionEnum::FIND ? '<=' : '<';
             $query->where($this->field, $operator, request()->input($filterName));

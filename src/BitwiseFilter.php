@@ -12,7 +12,7 @@ class BitwiseFilter extends BaseFilter
 
     public function handle($query, \Closure $next)
     {
-        $filterName = "{$this->detector}.{$this->field}";
+        $filterName = "{$this->detector}{$this->field}";
         $toSearch = request()->input($filterName);
         if (! $this->shouldFilter($filterName)) {
             return $next($query);
