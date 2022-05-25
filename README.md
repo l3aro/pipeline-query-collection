@@ -45,7 +45,7 @@ This package contains a collection of class that can be used with Laravel Pipeli
 Let's see below queries
 
 ```php
-// ?name=Baro&is_admin=1&created_at_from=01-06-2022&created_at_to=30-06-2022
+// users?name=Baro&is_admin=1&created_at_from=2022-06-01&created_at_to=2022-06-31
 $users = User::query()
     ->when($request->name ?? null, function($query, $name) {
         $query->where('name', 'like', "%$name%");
@@ -67,7 +67,7 @@ As you all can see,  it's obviously that filters conditions will continue to gro
 ```php
 use Baro\PipelineQueryCollection;
 
-// ?name=Baro&is_admin=1&created_at_from=01-06-2022&created_at_to=30-06-2022
+// users?name=Baro&is_admin=1&created_at_from=2022-06-01&created_at_to=2022-06-31
 $users = Users::query()->filter([
     new PipelineQueryCollection\RelativeFilter('name'),
     new PipelineQueryCollection\BooleanFilter('is_admin'),
