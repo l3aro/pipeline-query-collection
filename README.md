@@ -151,7 +151,7 @@ User::query->filter([
 use Baro\PipelineQueryCollection\DateToFilter;
 use Baro\PipelineQueryCollection\Enums\MotionEnum;
 
-// users?updated_at_from=2022-05-31
+// users?updated_at_to=2022-05-31
 User::query->filter([
     new DateToFilter('updated_at'), // where updated_at <= 2022-05-31
     new DateToFilter('updated_at', MotionEnum::TILL), // where updated_at < 2022-05-31
