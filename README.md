@@ -158,6 +158,16 @@ User::query->filter([
 ]);
 ```
 
+#### Exact filter
+```php
+use Baro\PipelineQueryCollection\ExactFilter;
+
+// users?id=4
+User::query->filter([
+    new ExactFilter('id'), // where id = 4
+]);
+```
+
 #### Relation filter
 ```php
 use Baro\PipelineQueryCollection\RelationFilter;
@@ -212,9 +222,38 @@ User::query()->filter([
 ])
 ```
 
+### Detector
+Sometimes, you want to setup your request with a prefix like `filter.`. You can config every pipe that have it
+```php
+use Baro\PipelineQueryCollection\ExactFilter;
+
+// users?filter[id]=4&filter[permission][0]=1&filter[permission][1]=4
+User::query->filter([
+    (new ExactFilter('id'))->detectBy('filter.'), // where id = 4
+    (new BitwiseFilter('permission'))->detectBy('filter.'), // where permission & 5 = 5
+]);
+```
+
+Or, you can define it globally
+```php
+// users?filter[id]=4&filter[permission][0]=1&filter[permission][1]=4
+
+// .env
+PIPELINE_QUERY_COLLECTION_DETECT_KEY="filter."
+
+// Query
+User::query->filter([
+    new ExactFilter('id'), // where id = 4
+    new BitwiseFilter('permission'), // where permission & 5 = 5
+]);
+```
+
+### Extend filter
+Yeah, you are free to use your own pipe. Take a look at some of my filters. All of them extends `BaseFilter` to have some useful properties and functions.
+
 ## Testing
 
-I'm not familiar with testing while package development, so my testing function is not working yet. Any contribution are welcomed!
+I'm not familiar with testing while package developing, so my testing function is not working yet. Any contribution are welcomed!
 
 ## Changelog
 
