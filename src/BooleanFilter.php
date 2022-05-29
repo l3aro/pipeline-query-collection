@@ -2,6 +2,8 @@
 
 namespace Baro\PipelineQueryCollection;
 
+use Illuminate\Database\Eloquent\Builder;
+
 class BooleanFilter extends BaseFilter
 {
     public function __construct($field)
@@ -10,13 +12,12 @@ class BooleanFilter extends BaseFilter
         $this->field = $field;
     }
 
-    public function handle($query, \Closure $next)
+    protected function apply(Builder $query): Builder
     {
-        $filterName = "{$this->detector}{$this->field}";
-        if ($this->shouldFilter($filterName)) {
-            $query->where($this->getSearchColumn(), request()->input($filterName) ? 1 : 0);
+        foreach ($this->getSearchValue() as $value) {
+            $query->where($this->getSearchColumn(), $value ? true : false);
         }
 
-        return $next($query);
+        return $query;
     }
 }

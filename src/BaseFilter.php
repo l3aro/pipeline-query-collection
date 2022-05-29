@@ -2,6 +2,8 @@
 
 namespace Baro\PipelineQueryCollection;
 
+use Illuminate\Database\Eloquent\Builder;
+
 abstract class BaseFilter
 {
     protected string $ignore;
@@ -14,7 +16,30 @@ abstract class BaseFilter
         $this->detector = config('pipeline-query-collection.detect_key');
     }
 
-    abstract public function handle($query, \Closure $next);
+    abstract protected function apply(Builder $query): Builder;
+
+    public function handle($query, \Closure $next)
+    {
+        if (!$this->shouldFilter($this->getFilterName())) {
+            return $next($query);
+        }
+
+        return $next($this->apply($query));
+    }
+
+    protected function getFilterName(): string
+    {
+        return "{$this->detector}{$this->field}";
+    }
+
+    protected function getSearchValue(): array
+    {
+        $searchValue =  request()->input($this->getFilterName());
+        if (!is_array($searchValue)) {
+            $searchValue = [$searchValue];
+        }
+        return $searchValue;
+    }
 
     public function filterOn(string $searchColumn)
     {

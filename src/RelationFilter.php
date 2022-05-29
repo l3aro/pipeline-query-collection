@@ -2,6 +2,8 @@
 
 namespace Baro\PipelineQueryCollection;
 
+use Illuminate\Database\Eloquent\Builder;
+
 class RelationFilter extends BaseFilter
 {
     private $relation;
@@ -13,15 +15,19 @@ class RelationFilter extends BaseFilter
         $this->field = $field;
     }
 
-    public function handle($query, \Closure $next)
+    protected function getFilterName(): string
     {
-        $filterName = "{$this->detector}{$this->relation}_{$this->field}";
-        $toSearch = request()->input($filterName);
-        $action = is_array($toSearch) ? 'whereIn' : 'where';
-        $query->whereHas($this->relation, function ($query) use ($action, $toSearch) {
-            $query->{$action}($this->getSearchColumn(), $toSearch);
+        return "{$this->detector}{$this->relation}_{$this->field}";
+    }
+
+    protected function apply(Builder $query): Builder
+    {
+        $searchValue = $this->getSearchValue();
+        $action = is_array($searchValue) ? 'whereIn' : 'where';
+        $query->whereHas($this->relation, function ($query) use ($action, $searchValue) {
+            $query->{$action}($this->getSearchColumn(), $searchValue);
         });
 
-        return $next($query);
+        return $query;
     }
 }

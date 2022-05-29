@@ -3,7 +3,7 @@
 namespace Baro\PipelineQueryCollection;
 
 use Baro\PipelineQueryCollection\Enums\WildcardPositionEnum;
-use Closure;
+use Illuminate\Database\Eloquent\Builder;
 
 class RelativeFilter extends BaseFilter
 {
@@ -16,24 +16,26 @@ class RelativeFilter extends BaseFilter
         if (is_null($wildcardPosition)) {
             $wildcardPosition = config('pipeline-query-collection.relative_wildcard_position');
         }
-        if (! $wildcardPosition instanceof WildcardPositionEnum) {
+        if (!$wildcardPosition instanceof WildcardPositionEnum) {
             $wildcardPosition = WildcardPositionEnum::from($wildcardPosition);
         }
         $this->wildcardPosition = $wildcardPosition;
     }
 
-    public function handle($query, Closure $next)
+    protected function apply(Builder $query): Builder
     {
-        $filterName = "{$this->detector}{$this->field}";
-        $toSearch = match ($this->wildcardPosition) {
-            WildcardPositionEnum::RIGHT => "{$this->field}%",
-            WildcardPositionEnum::LEFT => "%{$this->field}",
-            default => "%{$this->field}%",
-        };
-        if ($this->shouldFilter($filterName)) {
-            $query->where($this->getSearchColumn(), 'like', $toSearch);
+        foreach ($this->getSearchValue() as $value) {
+            $query->where($this->getSearchColumn(), 'like', $this->computeSearchValue($value));
         }
+        return $query;
+    }
 
-        return $next($query);
+    private function computeSearchValue($value)
+    {
+        return match ($this->wildcardPosition) {
+            WildcardPositionEnum::RIGHT => "$value%",
+            WildcardPositionEnum::LEFT => "%$value",
+            default => "%$value%",
+        };
     }
 }
