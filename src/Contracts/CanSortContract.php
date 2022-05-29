@@ -8,5 +8,5 @@ interface CanSortContract
 {
     public function scopeSort(Builder $query, array $criteria = null): Builder;
 
-    public function getSortCriteria(): array;
+    public function sortCriteria(): array;
 }

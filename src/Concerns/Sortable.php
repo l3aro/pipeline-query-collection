@@ -9,7 +9,7 @@ trait Sortable
 {
     public function scopeSort(Builder $query, array $criteria = null): Builder
     {
-        $criteria = is_null($criteria) ? $this->getSortCriteria() : $criteria;
+        $criteria = is_null($criteria) ? $this->sortCriteria() : $criteria;
 
         return app(Pipeline::class)
             ->send($query)
@@ -17,7 +17,7 @@ trait Sortable
             ->thenReturn();
     }
 
-    protected function getSortCriteria(): array
+    public function sortCriteria(): array
     {
         if (method_exists($this, 'getSorts')) {
             return $this->getSorts();

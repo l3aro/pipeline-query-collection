@@ -9,7 +9,7 @@ trait Filterable
 {
     public function scopeFilter(Builder $query, array $criteria = null): Builder
     {
-        $criteria = is_null($criteria) ? $this->getFilterCriteria() : $criteria;
+        $criteria = is_null($criteria) ? $this->filterCriteria() : $criteria;
 
         return app(Pipeline::class)
             ->send($query)
@@ -17,7 +17,7 @@ trait Filterable
             ->thenReturn();
     }
 
-    protected function getFilterCriteria(): array
+    public function filterCriteria(): array
     {
         if (method_exists($this, 'getFilters')) {
             return $this->getFilters();
