@@ -7,7 +7,7 @@ abstract class BaseFilter
     protected string $ignore;
     protected string $field;
     protected string $detector;
-    protected string $searchColumn = null;
+    protected ?string $searchColumn = null;
 
     public function __construct()
     {
