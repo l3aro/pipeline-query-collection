@@ -8,6 +8,6 @@ return [
     'date_from_postfix' => env('PIPELINE_QUERY_COLLECTION_DATE_FROM_POSTFIX', 'from'),
     'date_to_postfix' => env('PIPELINE_QUERY_COLLECTION_DATE_TO_POSTFIX', 'to'),
 
-    // default motion for date filters
+    // default motion for date filters, can be 'find' or 'till'
     'date_motion' => env('PIPELINE_QUERY_COLLECTION_DATE_MOTION', 'find'),
 ];

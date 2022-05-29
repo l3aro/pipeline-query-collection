@@ -143,6 +143,7 @@ use Baro\PipelineQueryCollection\Enums\MotionEnum;
 User::query->filter([
     new DateFromFilter('updated_at'), // where updated_at >= 2022-05-31
     new DateFromFilter('updated_at', MotionEnum::TILL), // where updated_at > 2022-05-31
+    // you can config default motion behavior and the postfix `from` in the config file
 ]);
 ```
 
@@ -155,6 +156,7 @@ use Baro\PipelineQueryCollection\Enums\MotionEnum;
 User::query->filter([
     new DateToFilter('updated_at'), // where updated_at <= 2022-05-31
     new DateToFilter('updated_at', MotionEnum::TILL), // where updated_at < 2022-05-31
+    // you can config default motion behavior and the postfix `to` in the config file
 ]);
 ```
 
@@ -175,7 +177,7 @@ use Baro\PipelineQueryCollection\RelationFilter;
 // users?roles_id[0]=1&roles_id[1]=4
 User::query()->filter([
     new RelationFilter('roles', 'id'), // where roles.id in(1,4)
-])
+]);
 ```
 
 #### Relative filter
@@ -189,7 +191,7 @@ User::query()->filter([
     new RelativeFilter('name'), // where('name', 'like', "%Baro%")
     new RelativeFilter('name', WildcardPositionEnum::LEFT), // where('name', 'like', "%Baro")
     new RelativeFilter('name', WildcardPositionEnum::RIGHT), // where('name', 'like', "Baro%")
-])
+]);
 ```
 
 #### Scope filter
@@ -210,7 +212,7 @@ use Baro\PipelineQueryCollection\ScopeFilter;
 
 User::query()->filter([
     new ScopeFilter('search'), // where (`id` = 'Baro' or `name` like '%Baro%')
-])
+]);
 ```
 #### Sort
 ```php
@@ -219,7 +221,7 @@ use Baro\PipelineQueryCollection\ScopeFilter;
 // users?sort[name]=asc&sort[permission]=desc
 User::query()->filter([
     new Sort(), //  order by `name` asc, `permission` desc
-])
+]);
 ```
 
 ### Detector
@@ -245,6 +247,18 @@ PIPELINE_QUERY_COLLECTION_DETECT_KEY="filter."
 User::query->filter([
     new ExactFilter('id'), // where id = 4
     new BitwiseFilter('permission'), // where permission & 5 = 5
+]);
+```
+
+### Custom search column
+
+Sometimes, your request field is not the same with column name. For example, in your database you have column `respond` and want to perform some query against it, but for some reasons, your request query is `reply` instead of `respond`.
+
+```php
+// users?reply=baro
+
+User::query->filter([
+    (new RelativeFilter('reply'))->filterOn('respond'), // where respond like '%baro%'
 ]);
 ```
 
