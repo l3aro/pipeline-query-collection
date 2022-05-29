@@ -9,7 +9,7 @@ class ExactFilter extends BaseFilter
     public function __construct($field)
     {
         parent::__construct();
-        $this->filterOn($field);
+        $this->field = $field;
     }
 
     public function handle($query, Closure $next)
