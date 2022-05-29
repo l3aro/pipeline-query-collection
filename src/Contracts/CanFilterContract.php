@@ -8,5 +8,5 @@ interface CanFilterContract
 {
     public function scopeFilter(Builder $query, array $criteria = null): Builder;
 
-    public function getFilters(): array;
+    public function getFilterCriteria(): array;
 }

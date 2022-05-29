@@ -23,9 +23,8 @@ class RelationFilter extends BaseFilter
     protected function apply(Builder $query): Builder
     {
         $searchValue = $this->getSearchValue();
-        $action = is_array($searchValue) ? 'whereIn' : 'where';
-        $query->whereHas($this->relation, function ($query) use ($action, $searchValue) {
-            $query->{$action}($this->getSearchColumn(), $searchValue);
+        $query->whereHas($this->relation, function ($query) use ($searchValue) {
+            $query->whereIn($this->getSearchColumn(), $searchValue);
         });
 
         return $query;

@@ -9,11 +9,20 @@ trait Sortable
 {
     public function scopeSort(Builder $query, array $criteria = null): Builder
     {
-        $criteria = is_null($criteria) ? $this->getSorts() : $criteria;
+        $criteria = is_null($criteria) ? $this->getSortCriteria() : $criteria;
 
         return app(Pipeline::class)
             ->send($query)
             ->through($criteria)
             ->thenReturn();
+    }
+
+    protected function getSortCriteria(): array
+    {
+        if (method_exists($this, 'getSorts')) {
+            return $this->getSorts();
+        }
+
+        return property_exists($this, 'sorts') ? $this->sorts : [];
     }
 }
