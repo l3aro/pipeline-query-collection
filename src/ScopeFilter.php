@@ -16,7 +16,7 @@ class ScopeFilter extends BaseFilter
     {
         $filterName = "{$this->detector}{$this->field}";
         if ($this->shouldFilter($filterName)) {
-            $query->{$this->field}(request()->input($filterName));
+            $query->{$this->getSearchColumn()}(request()->input($filterName));
         }
 
         return $next($query);

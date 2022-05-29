@@ -31,7 +31,7 @@ class RelativeFilter extends BaseFilter
             default => "%{$this->field}%",
         };
         if ($this->shouldFilter($filterName)) {
-            $query->where($this->field, 'like', $toSearch);
+            $query->where($this->getSearchColumn(), 'like', $toSearch);
         }
 
         return $next($query);

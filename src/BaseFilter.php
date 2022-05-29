@@ -7,6 +7,7 @@ abstract class BaseFilter
     protected string $ignore;
     protected string $field;
     protected string $detector;
+    protected string $searchColumn = null;
 
     public function __construct()
     {
@@ -15,11 +16,16 @@ abstract class BaseFilter
 
     abstract public function handle($query, \Closure $next);
 
-    public function filterOn(string $field)
+    public function filterOn(string $searchColumn)
     {
-        $this->field = $field;
+        $this->searchColumn = $searchColumn;
 
         return $this;
+    }
+
+    protected function getSearchColumn()
+    {
+        return $this->searchColumn ?? $this->field;
     }
 
     public function ignore(string $ignore = '')
@@ -38,7 +44,7 @@ abstract class BaseFilter
 
     protected function shouldFilter(string $key)
     {
-        if (! request()->has($key)) {
+        if (!request()->has($key)) {
             return false;
         }
 

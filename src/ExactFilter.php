@@ -16,7 +16,7 @@ class ExactFilter extends BaseFilter
     {
         $filterName = "{$this->detector}{$this->field}";
         if ($this->shouldFilter($filterName)) {
-            $query->where($this->field, request()->input($filterName));
+            $query->where($this->getSearchColumn(), request()->input($filterName));
         }
 
         return $next($query);

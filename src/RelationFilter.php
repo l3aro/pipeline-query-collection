@@ -19,7 +19,7 @@ class RelationFilter extends BaseFilter
         $toSearch = request()->input($filterName);
         $action = is_array($toSearch) ? 'whereIn' : 'where';
         $query->whereHas($this->relation, function ($query) use ($action, $toSearch) {
-            $query->{$action}($this->field, $toSearch);
+            $query->{$action}($this->getSearchColumn(), $toSearch);
         });
 
         return $next($query);

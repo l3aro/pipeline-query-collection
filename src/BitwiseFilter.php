@@ -23,7 +23,7 @@ class BitwiseFilter extends BaseFilter
         }
 
         foreach ($toSearch as $search) {
-            $query->where($this->field, '&', $search);
+            $query->where($this->getSearchColumn(), '&', $search);
         }
 
         return $next($query);

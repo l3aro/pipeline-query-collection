@@ -14,7 +14,7 @@ class BooleanFilter extends BaseFilter
     {
         $filterName = "{$this->detector}{$this->field}";
         if ($this->shouldFilter($filterName)) {
-            $query->where($this->field, request()->input($filterName) ? 1 : 0);
+            $query->where($this->getSearchColumn(), request()->input($filterName) ? 1 : 0);
         }
 
         return $next($query);
