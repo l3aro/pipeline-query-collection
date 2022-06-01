@@ -23,6 +23,6 @@ trait Sortable
             return $this->getSorts();
         }
 
-        return property_exists($this, 'sorts') ? $this->sorts : [];
+        return [];
     }
 }
