@@ -15,9 +15,10 @@ class BitwiseFilter extends BaseFilter
     protected function apply(Builder $query): Builder
     {
         foreach ($this->getSearchValue() as $value) {
-            $query->whereRaw("{$this->getSearchColumn()} & ? = ?", [$value, $value]);
+            $flag ??= intval($value);
+            $flag = intval($flag) | intval($value);
         }
-
+        $query->whereRaw("{$this->getSearchColumn()} & ? = ?", [$flag, $flag]);
         return $query;
     }
 }
