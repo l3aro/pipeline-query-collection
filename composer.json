@@ -35,7 +35,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Baro\\PipelineQueryCollection\\": "src"
+            "Baro\\PipelineQueryCollection\\": "src",
+            "Baro\\PipelineQueryCollection\\Database\\Factories\\": "database/factories"
         }
     },
     "autoload-dev": {
