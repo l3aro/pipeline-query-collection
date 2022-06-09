@@ -6,7 +6,7 @@ class SortDescending
 {
     public function handle($query, \Closure $next)
     {
-        $sort = request()->input('sort', []);
+        $sort = $this->request->input('sort', []);
         if (! is_array($sort)) {
             $sort = [$sort];
         }
