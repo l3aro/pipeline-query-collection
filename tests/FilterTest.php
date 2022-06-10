@@ -135,3 +135,27 @@ it('can filter models by relative value', function () {
         new RelativeFilter('name', WildcardPositionEnum::LEFT),
     ])->count())->toBe(1);
 });
+
+it('can filter models with local scope', function() {
+    TestModel::factory()->create(['name' => 'Baro Nil']);
+    TestModel::factory()->create(['name' => 'Billy Joe']);
+
+    injectRequest(['search' => 'Baro']);
+    expect(TestModel::filter()->count())->toBe(1);
+
+    injectRequest(['search' => '1']);
+    expect(TestModel::filter()->count())->toBe(1);
+
+    injectRequest(['search' => 'Tom']);
+    expect(TestModel::filter()->count())->toBe(0);
+});
+
+it('can filter models with prefix detect key', function () {
+    TestModel::factory()->create(['name' => 'Baro Nil']);
+    TestModel::factory()->create(['name' => 'Billy Joe']);
+
+    injectRequest(['filter' => ['name' => 'Baro']]);
+    expect(TestModel::filter([
+        (new RelativeFilter('name'))->detectBy('filter.')
+    ])->count())->toBe(1);
+});
