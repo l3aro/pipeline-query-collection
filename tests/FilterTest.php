@@ -159,3 +159,13 @@ it('can filter models with prefix detect key', function () {
         (new RelativeFilter('name'))->detectBy('filter.')
     ])->count())->toBe(1);
 });
+
+it('can filter models with custom column search', function () {
+    TestModel::factory()->create(['name' => 'Baro Nil']);
+    TestModel::factory()->create(['name' => 'Billy Joe']);
+
+    injectRequest(['title' => 'Baro']);
+    expect(TestModel::filter([
+        (new RelativeFilter('title'))->filterOn('name')
+    ])->count())->toBe(1);
+});
