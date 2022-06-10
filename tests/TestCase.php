@@ -31,13 +31,18 @@ class TestCase extends Orchestra
             $table->string('name');
             $table->unsignedTinyInteger('type_flag')->default(0);
             $table->boolean('is_visible')->default(true);
+            $table->unsignedInteger('related_model_id')->nullable();
             $table->timestamps();
         });
 
         $app['db']->connection()->getSchemaBuilder()->create('related_models', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('test_model_id');
             $table->timestamps();
+        });
+
+        $app['db']->connection()->getSchemaBuilder()->create('pivot_table', function (Blueprint $table) {
+            $table->unsignedInteger('test_model_id');
+            $table->unsignedInteger('related_model_id');
         });
     }
 

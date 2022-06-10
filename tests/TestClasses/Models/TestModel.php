@@ -29,11 +29,22 @@ class TestModel extends Model
             new BooleanFilter('is_visible'),
             new DateFromFilter('created_at'),
             new DateToFilter('created_at'),
-            new ExactFilter('name'),
-            // new RelationFilter(''),
-            new  RelativeFilter('name'),
+            new ExactFilter('updated_at'),
+            new RelationFilter('belongs_to_related_models', 'id'),
+            new RelationFilter('belongs_to_many_related_models', 'id'),
+            new RelativeFilter('name'),
             new ScopeFilter('search'),
         ];
+    }
+
+    public function belongsToRelatedModels()
+    {
+        return $this->belongsTo(RelatedModel::class, 'related_model_id');
+    }
+
+    public function belongsToManyRelatedModels()
+    {
+        return $this->belongsToMany(RelatedModel::class, 'pivot_table');
     }
 
     public function scopeSearch(Builder $query, string $search)

@@ -3,6 +3,7 @@
 namespace Baro\PipelineQueryCollection;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Str;
 
 class RelationFilter extends BaseFilter
 {
@@ -23,6 +24,7 @@ class RelationFilter extends BaseFilter
     protected function apply(Builder $query): Builder
     {
         $searchValue = $this->getSearchValue();
+        $this->relation = Str::camel($this->relation);
         $query->whereHas($this->relation, function ($query) use ($searchValue) {
             $query->whereIn($this->getSearchColumn(), $searchValue);
         });

@@ -33,7 +33,7 @@ class DateToFilter extends BaseFilter
 
     protected function getFilterName(): string
     {
-        $postfix = config('pipeline-query-collection.date_from_postfix');
+        $postfix = config('pipeline-query-collection.date_to_postfix');
         return "{$this->detector}{$this->field}_{$postfix}";
     }
 }

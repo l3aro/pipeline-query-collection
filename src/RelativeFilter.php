@@ -12,9 +12,9 @@ class RelativeFilter extends BaseFilter
     public function __construct($field, WildcardPositionEnum|string $wildcardPosition = null)
     {
         parent::__construct();
-        $this->filterOn($field);
+        $this->field = $field;
         if (is_null($wildcardPosition)) {
-            $wildcardPosition = config('pipeline-query-collection.relative_wildcard_position');
+            $wildcardPosition = config('pipeline-query-collection.relative_wildcard_position', WildcardPositionEnum::BOTH);
         }
         if (!$wildcardPosition instanceof WildcardPositionEnum) {
             $wildcardPosition = WildcardPositionEnum::from($wildcardPosition);
