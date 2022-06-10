@@ -5,12 +5,14 @@ namespace Baro\PipelineQueryCollection\Tests\TestClasses\Models;
 use Baro\PipelineQueryCollection\BitwiseFilter;
 use Baro\PipelineQueryCollection\BooleanFilter;
 use Baro\PipelineQueryCollection\Concerns\Filterable;
+use Baro\PipelineQueryCollection\Concerns\Sortable;
 use Baro\PipelineQueryCollection\DateFromFilter;
 use Baro\PipelineQueryCollection\DateToFilter;
 use Baro\PipelineQueryCollection\ExactFilter;
 use Baro\PipelineQueryCollection\RelationFilter;
 use Baro\PipelineQueryCollection\RelativeFilter;
 use Baro\PipelineQueryCollection\ScopeFilter;
+use Baro\PipelineQueryCollection\Sort;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -19,6 +21,7 @@ class TestModel extends Model
 {
     use HasFactory;
     use Filterable;
+    use Sortable;
 
     protected $guarded = [];
 
@@ -34,6 +37,13 @@ class TestModel extends Model
             new RelationFilter('belongs_to_many_related_models', 'id'),
             new RelativeFilter('name'),
             new ScopeFilter('search'),
+        ];
+    }
+
+    protected function getSorts()
+    {
+        return [
+            new Sort,
         ];
     }
 
