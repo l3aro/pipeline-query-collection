@@ -32,6 +32,7 @@ class TestCase extends Orchestra
             $table->unsignedTinyInteger('type_flag')->default(0);
             $table->boolean('is_visible')->default(true);
             $table->unsignedInteger('related_model_id')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
 

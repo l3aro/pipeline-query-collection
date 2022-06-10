@@ -181,3 +181,16 @@ it('can filter models with custom column search', function () {
         (new RelativeFilter('title'))->filterOn('name')
     ])->count())->toBe(1);
 });
+
+it('can filter model with trashed', function () {
+    TestModel::factory()->count(10)->create();
+    TestModel::query()->limit(4)->delete();
+
+    expect(TestModel::filter()->count())->toBe(6);
+
+    injectRequest(['trashed' => 'with']);
+    expect(TestModel::filter()->count())->toBe(10);
+
+    injectRequest(['trashed' => 'only']);
+    expect(TestModel::filter()->count())->toBe(4);
+});

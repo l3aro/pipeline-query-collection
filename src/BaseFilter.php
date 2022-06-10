@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 abstract class BaseFilter
 {
     protected string $ignore;
-    protected string $field;
+    protected ?string $field = null;
     protected string $detector;
     protected ?string $searchColumn = null;
     protected Request $request;
