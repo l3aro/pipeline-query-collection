@@ -50,6 +50,12 @@ it('can filter models by date from value', function () {
     expect(TestModel::filter([
         new DateFromFilter('created_at', MotionEnum::TILL),
     ])->count())->toBe(4);
+
+    injectRequest(['created_at_start' => '2020-01-01']);
+    expect(TestModel::filter()->count())->toBe(7);
+    expect(TestModel::filter([
+        (new DateFromFilter('created_at', MotionEnum::TILL))->setPostFix('start'),
+    ])->count())->toBe(4);
 });
 
 it('can filter models by date to value', function () {
@@ -60,6 +66,12 @@ it('can filter models by date to value', function () {
     expect(TestModel::filter()->count())->toBe(4);
     expect(TestModel::filter([
         new DateToFilter('created_at', MotionEnum::TILL),
+    ])->count())->toBe(0);
+
+    injectRequest(['created_at_end' => today()->addDays(4)->toDateString()]);
+    expect(TestModel::filter()->count())->toBe(4);
+    expect(TestModel::filter([
+        (new DateToFilter('created_at', MotionEnum::TILL))->setPostFix('end'),
     ])->count())->toBe(0);
 
     injectRequest(['created_at_to' => today()->addDays(7)]);
@@ -136,7 +148,7 @@ it('can filter models by relative value', function () {
     ])->count())->toBe(1);
 });
 
-it('can filter models with local scope', function() {
+it('can filter models with local scope', function () {
     TestModel::factory()->create(['name' => 'Baro Nil']);
     TestModel::factory()->create(['name' => 'Billy Joe']);
 

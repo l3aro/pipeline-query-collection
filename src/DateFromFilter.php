@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Builder;
 
 class DateFromFilter extends BaseFilter
 {
-    private $motion;
+    private MotionEnum|string|null $motion;
+    private $postfix = null;
 
     public function __construct($field = 'created_at', MotionEnum|string $motion = null)
     {
@@ -33,7 +34,18 @@ class DateFromFilter extends BaseFilter
 
     protected function getFilterName(): string
     {
-        $postfix = config('pipeline-query-collection.date_from_postfix');
+        $postfix = $this->getPostFix() ?? config('pipeline-query-collection.date_from_postfix');
         return "{$this->detector}{$this->field}_{$postfix}";
+    }
+
+    public function setPostFix(string $postfix): self
+    {
+        $this->postfix = $postfix;
+        return $this;
+    }
+
+    private function getPostFix(): ?string
+    {
+        return $this->postfix;
     }
 }
