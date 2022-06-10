@@ -17,8 +17,8 @@ class TrashFilter extends BaseFilter
     {
         $option = TrashOptionEnum::tryFrom($this->getSearchValue()[0]);
         match ($option) {
-            TrashOptionEnum::ONLY => $query->onlyTrashed(),
-            TrashOptionEnum::WITH => $query->withTrashed(),
+            TrashOptionEnum::ONLY => $query->onlyTrashed(), // @phpstan-ignore-line
+            TrashOptionEnum::WITH => $query->withTrashed(), // @phpstan-ignore-line
             default => $query,
         };
         return $query;

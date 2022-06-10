@@ -14,6 +14,7 @@ class BitwiseFilter extends BaseFilter
 
     protected function apply(Builder $query): Builder
     {
+        $flag = null;
         foreach ($this->getSearchValue() as $value) {
             $flag ??= intval($value);
             $flag = intval($flag) | intval($value);
