@@ -13,15 +13,18 @@ use Baro\PipelineQueryCollection\RelationFilter;
 use Baro\PipelineQueryCollection\RelativeFilter;
 use Baro\PipelineQueryCollection\ScopeFilter;
 use Baro\PipelineQueryCollection\Sort;
+use Baro\PipelineQueryCollection\TrashFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class TestModel extends Model
 {
     use HasFactory;
     use Filterable;
     use Sortable;
+    use SoftDeletes;
 
     protected $guarded = [];
 
@@ -37,6 +40,7 @@ class TestModel extends Model
             new RelationFilter('belongs_to_many_related_models', 'id'),
             new RelativeFilter('name'),
             new ScopeFilter('search'),
+            new TrashFilter,
         ];
     }
 
