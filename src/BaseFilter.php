@@ -3,6 +3,7 @@
 namespace Baro\PipelineQueryCollection;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\Request;
 
 abstract class BaseFilter
 {
@@ -10,9 +11,11 @@ abstract class BaseFilter
     protected string $field;
     protected string $detector;
     protected ?string $searchColumn = null;
+    protected Request $request;
 
     public function __construct()
     {
+        $this->request = app(Request::class);
         $this->detector = config('pipeline-query-collection.detect_key');
     }
 
@@ -34,7 +37,7 @@ abstract class BaseFilter
 
     protected function getSearchValue(): array
     {
-        $searchValue =  request()->input($this->getFilterName());
+        $searchValue =  $this->request->input($this->getFilterName());
         if (!is_array($searchValue)) {
             $searchValue = [$searchValue];
         }
@@ -69,11 +72,11 @@ abstract class BaseFilter
 
     protected function shouldFilter(string $key)
     {
-        if (!request()->has($key)) {
+        if (!$this->request->has($key)) {
             return false;
         }
 
-        if (isset($this->ignore) && $this->ignore === request()->input($key)) {
+        if (isset($this->ignore) && $this->ignore === $this->request->input($key)) {
             return false;
         }
 
