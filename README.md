@@ -214,6 +214,26 @@ User::query()->filter([
     new ScopeFilter('search'), // where (`id` = 'Baro' or `name` like '%Baro%')
 ]);
 ```
+
+### Trash filter
+
+When using Laravel's [soft delete](https://laravel.com/docs/master/eloquent#querying-soft-deleted-models), you can use the pipe `TrashFilter`
+ to query these models. The default query name is `trashed`, and filters responds to particular values:
+ * `with`: the query should be `?trashed=with` to include soft deleted records to the result set
+ * `only`: the query should be `?trashed=only` to return only soft deleted records to the result set
+ * any other value, or completely remove `trashed` from request query will return only records that are not soft deleted in the result set
+
+ You can change query name `trashed` by passing your custom name to the `TrashFilter` constructor
+ ```php
+use Baro\PipelineQueryCollection\TrashFilter;
+
+
+// ?removed=only
+User::query()->filter([
+    new TrashFilter('removed'), // where `deleted_at` is not null
+]);
+```
+
 #### Sort
 ```php
 use Baro\PipelineQueryCollection\ScopeFilter;
@@ -267,11 +287,9 @@ Yeah, you are free to use your own pipe. Take a look at some of my filters. All 
 
 ## Testing
 
-I'm not familiar with testing while package developing, so my testing function is not working yet. Any contribution are welcomed!
-
-## Changelog
-
-Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
+```bash
+composer test
+```
 
 ## Contributing
 
