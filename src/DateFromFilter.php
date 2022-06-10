@@ -27,7 +27,7 @@ class DateFromFilter extends BaseFilter
     {
         $operator = $this->motion === MotionEnum::FIND ? '>=' : '>';
         foreach ($this->getSearchValue() as $value) {
-            $query->where($this->getSearchColumn(), $operator, $value);
+            $query->whereDate($this->getSearchColumn(), $operator, $value);
         }
         return $query;
     }
