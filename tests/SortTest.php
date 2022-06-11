@@ -12,48 +12,55 @@ beforeEach(function () {
 
 it('can sort by a single column', function () {
     injectRequest(['sort' => ['name' => 'asc']]);
-    TestModel::sort()->get();
-    assertQueryExecuted('select * from `test_models` where `test_models`.`deleted_at` is null order by `name` asc');
+    $query = TestModel::sort();
+    $query->get();
+    assertQueryExecuted($query->toSql());
 
     injectRequest(['sort' => ['name' => 'desc']]);
-    TestModel::sort()->get();
-    assertQueryExecuted('select * from `test_models` where `test_models`.`deleted_at` is null order by `name` desc');
+    $query = TestModel::sort();
+    $query->get();
+    assertQueryExecuted($query->toSql());
 });
 
 it('can sort by multiple columns', function () {
     injectRequest(['sort' => ['name' => 'asc', 'id' => 'desc']]);
-    TestModel::sort()->get();
-    assertQueryExecuted('select * from `test_models` where `test_models`.`deleted_at` is null order by `name` asc, `id` desc');
+    $query = TestModel::sort();
+    $query->get();
+    assertQueryExecuted($query->toSql());
 });
 
 it('can sort ascending by a single column', function () {
     injectRequest(['sort' => ['name']]);
-    TestModel::sort([
+    $query = TestModel::sort([
         new SortAscending,
-    ])->get();
-    assertQueryExecuted('select * from `test_models` where `test_models`.`deleted_at` is null order by `name` asc');
+    ]);
+    $query->get();
+    assertQueryExecuted($query->toSql());
 });
 
 it('can sort ascending by multiple columns', function () {
     injectRequest(['sort' => ['name', 'id']]);
-    TestModel::sort([
+    $query = TestModel::sort([
         new SortAscending,
-    ])->get();
-    assertQueryExecuted('select * from `test_models` where `test_models`.`deleted_at` is null order by `name` asc, `id` asc');
+    ]);
+    $query->get();
+    assertQueryExecuted($query->toSql());
 });
 
 it('can sort descending by a single column', function () {
     injectRequest(['sort' => ['name']]);
-    TestModel::sort([
+    $query = TestModel::sort([
         new SortDescending,
-    ])->get();
-    assertQueryExecuted('select * from `test_models` where `test_models`.`deleted_at` is null order by `name` desc');
+    ]);
+    $query->get();
+    assertQueryExecuted($query->toSql());
 });
 
 it('can sort descending by multiple columns', function () {
     injectRequest(['sort' => ['name', 'id']]);
-    TestModel::sort([
+    $query = TestModel::sort([
         new SortDescending,
-    ])->get();
-    assertQueryExecuted('select * from `test_models` where `test_models`.`deleted_at` is null order by `name` desc, `id` desc');
+    ]);
+    $query->get();
+    assertQueryExecuted($query->toSql());
 });
