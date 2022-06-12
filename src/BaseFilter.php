@@ -2,32 +2,27 @@
 
 namespace Baro\PipelineQueryCollection;
 
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Http\Request;
-
-abstract class BaseFilter
+abstract class BaseFilter extends BasePipe
 {
     protected string $ignore;
     protected ?string $field = null;
     protected string $detector;
     protected ?string $searchColumn = null;
-    protected Request $request;
 
     public function __construct()
     {
-        $this->request = app(Request::class);
+        parent::__construct();
         $this->detector = config('pipeline-query-collection.detect_key');
     }
 
-    abstract protected function apply(Builder $query): Builder;
-
     public function handle($query, \Closure $next)
     {
+        $this->query = $query;
         if (!$this->shouldFilter($this->getFilterName())) {
             return $next($query);
         }
-
-        return $next($this->apply($query));
+        $this->apply();
+        return $next($this->query);
     }
 
     protected function getFilterName(): string

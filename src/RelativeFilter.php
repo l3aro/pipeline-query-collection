@@ -3,7 +3,6 @@
 namespace Baro\PipelineQueryCollection;
 
 use Baro\PipelineQueryCollection\Enums\WildcardPositionEnum;
-use Illuminate\Database\Eloquent\Builder;
 
 class RelativeFilter extends BaseFilter
 {
@@ -22,12 +21,12 @@ class RelativeFilter extends BaseFilter
         $this->wildcardPosition = $wildcardPosition;
     }
 
-    protected function apply(Builder $query): Builder
+    protected function apply(): static
     {
         foreach ($this->getSearchValue() as $value) {
-            $query->where($this->getSearchColumn(), 'like', $this->computeSearchValue($value));
+            $this->query->where($this->getSearchColumn(), 'like', $this->computeSearchValue($value));
         }
-        return $query;
+        return $this;
     }
 
     private function computeSearchValue($value)

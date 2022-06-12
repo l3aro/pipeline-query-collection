@@ -40,6 +40,7 @@ it('can filter models by date from value', function () {
     expect(TestModel::filter()->count())->toBe(0);
 
     injectRequest(['created_at_from' => '2020-01-02']);
+    // dump(TestModel::getConnectionResolver()->getDriverName());
     expect(TestModel::filter()->count())->toBe(4);
     expect(TestModel::filter([
         new DateFromFilter('created_at', MotionEnum::TILL),

@@ -2,8 +2,6 @@
 
 namespace Baro\PipelineQueryCollection;
 
-use Illuminate\Database\Eloquent\Builder;
-
 class ExactFilter extends BaseFilter
 {
     public function __construct($field)
@@ -12,11 +10,11 @@ class ExactFilter extends BaseFilter
         $this->field = $field;
     }
 
-    protected function apply(Builder $query): Builder
+    protected function apply(): static
     {
         foreach ($this->getSearchValue() as $value) {
-            $query->where($this->getSearchColumn(), $value);
+            $this->query->where($this->getSearchColumn(), $value);
         }
-        return $query;
+        return $this;
     }
 }
