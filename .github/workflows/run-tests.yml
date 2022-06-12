@@ -60,10 +60,18 @@ jobs:
               run: |
                   composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
                   composer update --${{ matrix.stability }} --prefer-dist --no-interaction
-            - name: Execute tests
+            - name: Execute tests with MySQL
               run: vendor/bin/pest
               env:
+                  DB_CONNECTION: mysql
                   DB_USERNAME: user
                   DB_PASSWORD: secret
                   DB_PORT: ${{ job.services.mysql.ports[3306] }}
                   REDIS_PORT: 6379
+            - name: Execute tests with SQLite
+              run: vendor/bin/pest
+              env:
+                  DB_CONNECTION: sqlite
+                  DB_DATABASE: :memory:
+                  REDIS_PORT: 6379
+            
