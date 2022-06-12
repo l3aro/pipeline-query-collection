@@ -118,7 +118,7 @@ Here the use all filter and sort in the collection
 use Baro\PipelineQueryCollection\BitwiseFilter;
 
 // users?permission[0]=2&permission[1]=4
-User::query->filter([
+User::query()->filter([
     new BitwiseFilter('permission'), // where permission & 6 = 6
 ]);
 ```
@@ -129,7 +129,7 @@ User::query->filter([
 use Baro\PipelineQueryCollection\BooleanFilter;
 
 // users?is_admin=1
-User::query->filter([
+User::query()->filter([
     new BooleanFilter('is_admin'), // where is_active = 1
 ]);
 ```
@@ -140,7 +140,7 @@ use Baro\PipelineQueryCollection\DateFromFilter;
 use Baro\PipelineQueryCollection\Enums\MotionEnum;
 
 // users?updated_at_from=2022-05-31
-User::query->filter([
+User::query()->filter([
     new DateFromFilter('updated_at'), // where updated_at >= 2022-05-31
     new DateFromFilter('updated_at', MotionEnum::TILL), // where updated_at > 2022-05-31
     // you can config default motion behavior and the postfix `from` in the config file
@@ -153,7 +153,7 @@ use Baro\PipelineQueryCollection\DateToFilter;
 use Baro\PipelineQueryCollection\Enums\MotionEnum;
 
 // users?updated_at_to=2022-05-31
-User::query->filter([
+User::query()->filter([
     new DateToFilter('updated_at'), // where updated_at <= 2022-05-31
     new DateToFilter('updated_at', MotionEnum::TILL), // where updated_at < 2022-05-31
     // you can config default motion behavior and the postfix `to` in the config file
@@ -165,7 +165,7 @@ User::query->filter([
 use Baro\PipelineQueryCollection\ExactFilter;
 
 // users?id=4
-User::query->filter([
+User::query()->filter([
     new ExactFilter('id'), // where id = 4
 ]);
 ```
@@ -250,7 +250,7 @@ Sometimes, you want to setup your request with a prefix like `filter.`. You can 
 use Baro\PipelineQueryCollection\ExactFilter;
 
 // users?filter[id]=4&filter[permission][0]=1&filter[permission][1]=4
-User::query->filter([
+User::query()->filter([
     (new ExactFilter('id'))->detectBy('filter.'), // where id = 4
     (new BitwiseFilter('permission'))->detectBy('filter.'), // where permission & 5 = 5
 ]);
@@ -264,7 +264,7 @@ Or, you can define it globally
 PIPELINE_QUERY_COLLECTION_DETECT_KEY="filter."
 
 // Query
-User::query->filter([
+User::query()->filter([
     new ExactFilter('id'), // where id = 4
     new BitwiseFilter('permission'), // where permission & 5 = 5
 ]);
@@ -277,7 +277,7 @@ Sometimes, your request field is not the same with column name. For example, in 
 ```php
 // users?reply=baro
 
-User::query->filter([
+User::query()->filter([
     (new RelativeFilter('reply'))->filterOn('respond'), // where respond like '%baro%'
 ]);
 ```
