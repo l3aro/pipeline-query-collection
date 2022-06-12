@@ -130,7 +130,7 @@ use Baro\PipelineQueryCollection\BooleanFilter;
 
 // users?is_admin=1
 User::query()->filter([
-    new BooleanFilter('is_admin'), // where is_active = 1
+    new BooleanFilter('is_admin'), // where is_admin = 1
 ]);
 ```
 
