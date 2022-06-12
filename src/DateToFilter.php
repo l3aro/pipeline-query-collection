@@ -3,7 +3,6 @@
 namespace Baro\PipelineQueryCollection;
 
 use Baro\PipelineQueryCollection\Enums\MotionEnum;
-use Illuminate\Database\Eloquent\Builder;
 
 class DateToFilter extends BaseFilter
 {
@@ -23,13 +22,22 @@ class DateToFilter extends BaseFilter
         $this->motion = $motion;
     }
 
-    protected function apply(Builder $query): Builder
+    protected function apply(): static
     {
         $operator = $this->motion === MotionEnum::FIND ? '<=' : '<';
+        $action = $this->getAction();
         foreach ($this->getSearchValue() as $value) {
-            $query->whereDate($this->getSearchColumn(), $operator, $value);
+            $this->query->$action($this->getSearchColumn(), $operator, $value);
         }
-        return $query;
+        return $this;
+    }
+
+    private function getAction(): string
+    {
+        return match ($this->getDriverName()) {
+            'sqlite' => 'whereDate',
+            default => 'where',
+        };
     }
 
     protected function getFilterName(): string

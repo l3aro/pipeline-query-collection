@@ -2,8 +2,6 @@
 
 namespace Baro\PipelineQueryCollection;
 
-use Illuminate\Database\Eloquent\Builder;
-
 class ScopeFilter extends BaseFilter
 {
     public function __construct($scopeName)
@@ -12,12 +10,12 @@ class ScopeFilter extends BaseFilter
         $this->field = $scopeName;
     }
 
-    protected function apply(Builder $query): Builder
+    protected function apply(): static
     {
         foreach ($this->getSearchValue() as $value) {
-            $query->{$this->field}($value);
+            $this->query->{$this->field}($value);
         }
 
-        return $query;
+        return $this;
     }
 }

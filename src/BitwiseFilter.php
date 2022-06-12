@@ -2,8 +2,6 @@
 
 namespace Baro\PipelineQueryCollection;
 
-use Illuminate\Database\Eloquent\Builder;
-
 class BitwiseFilter extends BaseFilter
 {
     public function __construct($field)
@@ -12,14 +10,14 @@ class BitwiseFilter extends BaseFilter
         $this->field = $field;
     }
 
-    protected function apply(Builder $query): Builder
+    protected function apply(): static
     {
         $flag = null;
         foreach ($this->getSearchValue() as $value) {
             $flag ??= intval($value);
             $flag = intval($flag) | intval($value);
         }
-        $query->whereRaw("{$this->getSearchColumn()} & ? = ?", [$flag, $flag]);
-        return $query;
+        $this->query->whereRaw("{$this->getSearchColumn()} & ? = ?", [$flag, $flag]);
+        return $this;
     }
 }

@@ -3,7 +3,6 @@
 namespace Baro\PipelineQueryCollection;
 
 use Baro\PipelineQueryCollection\Enums\TrashOptionEnum;
-use Illuminate\Database\Eloquent\Builder;
 
 class TrashFilter extends BaseFilter
 {
@@ -13,14 +12,14 @@ class TrashFilter extends BaseFilter
         $this->field = $field;
     }
 
-    protected function apply(Builder $query): Builder
+    protected function apply(): static
     {
         $option = TrashOptionEnum::tryFrom($this->getSearchValue()[0]);
         match ($option) {
-            TrashOptionEnum::ONLY => $query->onlyTrashed(), // @phpstan-ignore-line
-            TrashOptionEnum::WITH => $query->withTrashed(), // @phpstan-ignore-line
-            default => $query,
+            TrashOptionEnum::ONLY => $this->query->onlyTrashed(), // @phpstan-ignore-line
+            TrashOptionEnum::WITH => $this->query->withTrashed(), // @phpstan-ignore-line
+            default => $this->query,
         };
-        return $query;
+        return $this;
     }
 }

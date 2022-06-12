@@ -9,16 +9,12 @@ class SortAscending extends BaseSort
         parent::__construct();
     }
 
-    public function handle($query, \Closure $next)
+    protected function apply(): static
     {
-        $sort = $this->request->input('sort', []);
-        if (!is_array($sort)) {
-            $sort = [$sort];
-        }
-        foreach ($sort as $field) {
-            $query->orderBy($field, 'asc');
+        foreach ($this->sort as $field) {
+            $this->query->orderBy($field, 'asc');
         }
 
-        return $next($query);
+        return $this;
     }
 }

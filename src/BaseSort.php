@@ -2,14 +2,21 @@
 
 namespace Baro\PipelineQueryCollection;
 
-use Illuminate\Http\Request;
-
-abstract class BaseSort
+abstract class BaseSort extends BasePipe
 {
-    protected Request $request;
+    protected array $sort;
 
     public function __construct()
     {
-        $this->request = app(Request::class);
+        parent::__construct();
+    }
+
+    public function handle($query, \Closure $next)
+    {
+        $this->query = $query;
+        $sort = $this->request->input('sort', []);
+        $this->sort = !is_array($sort) ? [$sort] : $sort;
+        $this->apply();
+        return $next($this->query);
     }
 }
