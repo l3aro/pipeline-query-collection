@@ -1,5 +1,5 @@
 
-# A query database collection for use with Laravel Pipeline
+## A query database collection for use with Laravel Pipeline
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/l3aro/pipeline-query-collection.svg?style=flat-square)](https://packagist.org/packages/l3aro/pipeline-query-collection)
 [![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/l3aro/pipeline-query-collection/run-tests?label=tests)](https://github.com/l3aro/pipeline-query-collection/actions?query=workflow%3Arun-tests+branch%3Amain)
@@ -39,6 +39,55 @@ $users = Users::query()->filter([
 ])
 ->get();
 ```
+
+## Table of Contents
+
+* [A query database collection for use with Laravel Pipeline](#a-query-database-collection-for-use-with-laravel-pipeline)
+* [Table of Contents](#table-of-contents)
+* [Installation](#installation)
+* [Usage](#usage)
+    * [Preparing your model](#preparing-your-model)
+    * [Feature](#feature)
+        * [Bitwise filter](#bitwise-filter)
+        * [Boolean filter](#boolean-filter)
+        * [Date From filter](#date-from-filter)
+        * [Date To filter](#date-to-filter)
+        * [Exact filter](#exact-filter)
+        * [Relation filter](#relation-filter)
+        * [Relative filter](#relative-filter)
+        * [Scope filter](#scope-filter)
+        * [Trash filter](#trash-filter)
+        * [Sort](#sort)
+    * [Detector](#detector)
+    * [Custom search column](#custom-search-column)
+    * [Extend filter](#extend-filter)
+* [Testing](#testing)
+* [Contributing](#contributing)
+* [Security Vulnerabilities](#security-vulnerabilities)
+* [Credits](#credits)
+* [License](#license)* [A query database collection for use with Laravel Pipeline](#a-query-database-collection-for-use-with-laravel-pipeline)
+* [Installation](#installation)
+* [Usage](#usage)
+    * [Preparing your model](#preparing-your-model)
+    * [Feature](#feature)
+        * [Bitwise filter](#bitwise-filter)
+        * [Boolean filter](#boolean-filter)
+        * [Date From filter](#date-from-filter)
+        * [Date To filter](#date-to-filter)
+        * [Exact filter](#exact-filter)
+        * [Relation filter](#relation-filter)
+        * [Relative filter](#relative-filter)
+        * [Scope filter](#scope-filter)
+        * [Trash filter](#trash-filter)
+        * [Sort](#sort)
+    * [Detector](#detector)
+    * [Custom search column](#custom-search-column)
+    * [Extend filter](#extend-filter)
+* [Testing](#testing)
+* [Contributing](#contributing)
+* [Security Vulnerabilities](#security-vulnerabilities)
+* [Credits](#credits)
+* [License](#license)
 
 ## Installation
 
@@ -215,7 +264,7 @@ User::query()->filter([
 ]);
 ```
 
-### Trash filter
+#### Trash filter
 
 When using Laravel's [soft delete](https://laravel.com/docs/master/eloquent#querying-soft-deleted-models), you can use the pipe `TrashFilter`
  to query these models. The default query name is `trashed`, and filters responds to particular values:
