@@ -64,6 +64,7 @@ jobs:
               run: vendor/bin/pest
               env:
                   DB_CONNECTION: mysql
+                  DB_DATABASE: query_test
                   DB_USERNAME: user
                   DB_PASSWORD: secret
                   DB_PORT: ${{ job.services.mysql.ports[3306] }}
@@ -74,4 +75,3 @@ jobs:
                   DB_CONNECTION: sqlite
                   DB_DATABASE: ":memory:"
                   REDIS_PORT: 6379
-            
