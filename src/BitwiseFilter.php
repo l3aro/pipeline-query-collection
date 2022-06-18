@@ -17,6 +17,9 @@ class BitwiseFilter extends BaseFilter
             $flag ??= intval($value);
             $flag = intval($flag) | intval($value);
         }
+        if ($flag === null) {
+            return $this;
+        }
         $this->query->whereRaw("{$this->getSearchColumn()} & ? = ?", [$flag, $flag]);
         return $this;
     }
