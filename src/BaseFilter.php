@@ -4,7 +4,7 @@ namespace Baro\PipelineQueryCollection;
 
 abstract class BaseFilter extends BasePipe
 {
-    protected string $ignore;
+    protected mixed $ignore;
     protected ?string $field = null;
     protected string $detector;
     protected ?string $searchColumn = null;
@@ -12,6 +12,7 @@ abstract class BaseFilter extends BasePipe
     public function __construct()
     {
         parent::__construct();
+        $this->ignore(null);
         $this->detector = config('pipeline-query-collection.detect_key');
     }
 
@@ -51,7 +52,7 @@ abstract class BaseFilter extends BasePipe
         return $this->searchColumn ?? $this->field;
     }
 
-    public function ignore(string $ignore = '')
+    public function ignore(mixed $ignore = '')
     {
         $this->ignore = $ignore;
 
@@ -71,7 +72,7 @@ abstract class BaseFilter extends BasePipe
             return false;
         }
 
-        if (isset($this->ignore) && $this->ignore === $this->request->input($key)) {
+        if ($this->ignore === $this->request->input($key)) {
             return false;
         }
 
