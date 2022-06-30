@@ -12,9 +12,7 @@ class ExactFilter extends BaseFilter
 
     protected function apply(): static
     {
-        foreach ($this->getSearchValue() as $value) {
-            $this->query->where($this->getSearchColumn(), $value);
-        }
+        $this->query->whereIn($this->getSearchColumn(), $this->getSearchValue());
         return $this;
     }
 }
