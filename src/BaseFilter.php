@@ -59,6 +59,13 @@ abstract class BaseFilter extends BasePipe
         return $this;
     }
 
+    public function field(mixed $field = '')
+    {
+        $this->field = $field;
+
+        return $this;
+    }
+
     public function detectBy(string $detector)
     {
         $this->detector = $detector;
