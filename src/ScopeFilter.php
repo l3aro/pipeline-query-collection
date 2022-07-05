@@ -12,8 +12,9 @@ class ScopeFilter extends BaseFilter
 
     protected function apply(): static
     {
+        $scopeName = $this->getSearchColumn();
         foreach ($this->getSearchValue() as $value) {
-            $this->query->{$this->field}($value);
+            $this->query->{$scopeName}($value);
         }
 
         return $this;
