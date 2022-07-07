@@ -12,7 +12,7 @@ class ScopeFilter extends BaseFilter
 
     protected function apply(): static
     {
-        $scopeName = $this->getSearchColumn();
+        $scopeName = str($this->getSearchColumn())->camel()->toString();
         foreach ($this->getSearchValue() as $value) {
             $this->query->{$scopeName}($value);
         }
