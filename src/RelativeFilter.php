@@ -31,6 +31,7 @@ class RelativeFilter extends BaseFilter
         foreach ($this->getSearchValue() as $value) {
             $this->query->where($this->getSearchColumn(), 'like', $this->computeSearchValue($value));
         }
+
         return $this;
     }
 

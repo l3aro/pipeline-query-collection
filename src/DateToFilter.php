@@ -7,6 +7,7 @@ use Baro\PipelineQueryCollection\Enums\MotionEnum;
 class DateToFilter extends BaseFilter
 {
     private MotionEnum|string|null $motion;
+
     private $postfix = null;
 
     public function __construct($field = 'created_at', MotionEnum|string $motion = null)
@@ -34,6 +35,7 @@ class DateToFilter extends BaseFilter
         foreach ($this->getSearchValue() as $value) {
             $this->query->$action($this->getSearchColumn(), $operator, $value);
         }
+
         return $this;
     }
 
@@ -48,12 +50,14 @@ class DateToFilter extends BaseFilter
     protected function getFilterName(): string
     {
         $postfix = $this->getPostFix() ?? config('pipeline-query-collection.date_to_postfix');
+
         return "{$this->detector}{$this->field}_{$postfix}";
     }
 
     public function setPostFix(string $postfix): self
     {
         $this->postfix = $postfix;
+
         return $this;
     }
 

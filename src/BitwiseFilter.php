@@ -26,6 +26,7 @@ class BitwiseFilter extends BaseFilter
             return $this;
         }
         $this->query->whereRaw("{$this->getSearchColumn()} & ? = ?", [$flag, $flag]);
+
         return $this;
     }
 }

@@ -6,17 +6,26 @@ abstract class BaseSort extends BasePipe
 {
     protected array $sort;
 
-    public function __construct()
+    protected mixed $sortValue = null;
+
+    public function value(mixed $sortValue): static
     {
-        parent::__construct();
+        $this->sortValue = $sortValue;
+
+        return $this;
     }
 
     public function handle($query, \Closure $next)
     {
         $this->query = $query;
-        $sort = $this->request->input('sort', []);
+        if (!is_null($this->sortValue)) {
+            $sort = $this->sortValue;
+        } else {
+            $sort = $this->request->input('sort', []);
+        }
         $this->sort = !is_array($sort) ? [$sort] : $sort;
         $this->apply();
+
         return $next($this->query);
     }
 }

@@ -169,7 +169,7 @@ it('can filter models with prefix detect key', function () {
 
     injectRequest(['filter' => ['name' => 'Baro']]);
     expect(TestModel::filter([
-        RelativeFilter::make('name')->detectBy('filter.')
+        RelativeFilter::make('name')->detectBy('filter.'),
     ])->count())->toBe(1);
 });
 
@@ -179,7 +179,7 @@ it('can filter models with custom column search', function () {
 
     injectRequest(['title' => 'Baro']);
     expect(TestModel::filter([
-        RelativeFilter::make('title')->filterOn('name')
+        RelativeFilter::make('title')->filterOn('name'),
     ])->count())->toBe(1);
 });
 
@@ -194,4 +194,18 @@ it('can filter model with trashed', function () {
 
     injectRequest(['trashed' => 'only']);
     expect(TestModel::filter()->count())->toBe(4);
+});
+
+it('can filter model using fixed value', function () {
+    TestModel::factory()->create(['name' => 'Baro Nil']);
+    TestModel::factory()->create(['name' => 'Billy Joe']);
+
+    injectRequest(['title' => 'John']);
+    expect(TestModel::filter([
+        RelativeFilter::make('title')->filterOn('name'),
+    ])->count())->toBe(0);
+
+    expect(TestModel::filter([
+        RelativeFilter::make('title')->filterOn('name')->value('Baro'),
+    ])->count())->toBe(1);
 });

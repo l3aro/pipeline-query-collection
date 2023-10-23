@@ -18,6 +18,7 @@ class ExactFilter extends BaseFilter
     protected function apply(): static
     {
         $this->query->whereIn($this->getSearchColumn(), $this->getSearchValue());
+
         return $this;
     }
 }

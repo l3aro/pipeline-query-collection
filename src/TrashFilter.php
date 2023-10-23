@@ -25,6 +25,7 @@ class TrashFilter extends BaseFilter
             TrashOptionEnum::WITH => $this->query->withTrashed(), // @phpstan-ignore-line
             default => $this->query,
         };
+
         return $this;
     }
 }

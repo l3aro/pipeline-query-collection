@@ -60,6 +60,7 @@ $users = Users::query()->filter([
         * [Sort](#sort)
     * [Detector](#detector)
     * [Custom search column](#custom-search-column)
+    * [Custom search value](#custom-search-value)
     * [Extend filter](#extend-filter)
 * [Testing](#testing)
 * [Contributing](#contributing)
@@ -309,6 +310,15 @@ User::query()->filter([
 ]);
 ```
 
+### Custom search value
+
+Your value that need to be searched isn't from your request? No problems. You can use `value()` function to hard set the search value!
+
+```php
+User::query()->filter([
+    RelativeFilter::make('name')->value('Baro'), // where('name', 'like', "%Baro%")
+]);
+```
 ### Extend filter
 Yeah, you are free to use your own pipe. Take a look at some of my filters. All of them extends `BaseFilter` to have some useful properties and functions.
 

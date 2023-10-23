@@ -21,10 +21,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class TestModel extends Model
 {
-    use HasFactory;
     use Filterable;
-    use Sortable;
+    use HasFactory;
     use SoftDeletes;
+    use Sortable;
 
     protected $guarded = [];
 

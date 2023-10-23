@@ -5,9 +5,14 @@ namespace Baro\PipelineQueryCollection;
 abstract class BaseFilter extends BasePipe
 {
     protected mixed $ignore;
+
     protected ?string $field = null;
+
     protected string $detector;
+
     protected ?string $searchColumn = null;
+
+    protected mixed $searchValue = null;
 
     public function __construct()
     {
@@ -23,7 +28,15 @@ abstract class BaseFilter extends BasePipe
             return $next($query);
         }
         $this->apply();
+
         return $next($this->query);
+    }
+
+    public function value(mixed $searchValue): static
+    {
+        $this->searchValue = $searchValue;
+
+        return $this;
     }
 
     protected function getFilterName(): string
@@ -33,10 +46,15 @@ abstract class BaseFilter extends BasePipe
 
     protected function getSearchValue(): array
     {
-        $searchValue =  $this->request->input($this->getFilterName());
+        if (!is_null($this->searchValue)) {
+            $searchValue = $this->searchValue;
+        } else {
+            $searchValue = $this->request->input($this->getFilterName());
+        }
         if (!is_array($searchValue)) {
             $searchValue = [$searchValue];
         }
+
         return $searchValue;
     }
 

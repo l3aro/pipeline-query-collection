@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 abstract class BasePipe
 {
     protected Request $request;
+
     protected Builder $query;
 
     public function __construct()
@@ -23,6 +24,7 @@ abstract class BasePipe
     {
         /** @var \Illuminate\Database\Connection */
         $connection = $this->query->getConnection();
+
         return $connection->getDriverName();
     }
 }
