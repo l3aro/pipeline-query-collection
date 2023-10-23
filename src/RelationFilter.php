@@ -4,7 +4,7 @@ namespace Baro\PipelineQueryCollection;
 
 use Illuminate\Support\Str;
 
-class RelationFilter extends BaseFilter
+final class RelationFilter extends BaseFilter
 {
     private $relation;
 
@@ -17,7 +17,7 @@ class RelationFilter extends BaseFilter
 
     public static function make($relation, $field): static
     {
-        return new static($relation, $field);
+        return new self($relation, $field);
     }
 
     protected function getFilterName(): string

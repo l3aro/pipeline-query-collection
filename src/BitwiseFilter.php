@@ -2,7 +2,7 @@
 
 namespace Baro\PipelineQueryCollection;
 
-class BitwiseFilter extends BaseFilter
+final class BitwiseFilter extends BaseFilter
 {
     public function __construct($field)
     {
@@ -12,7 +12,7 @@ class BitwiseFilter extends BaseFilter
 
     public static function make($field): static
     {
-        return new static($field);
+        return new self($field);
     }
 
     protected function apply(): static
