@@ -6,10 +6,11 @@ use Baro\PipelineQueryCollection\SortDescending;
 use Baro\PipelineQueryCollection\Tests\TestClasses\Models\TestModel;
 use Illuminate\Support\Facades\DB;
 
+use function PHPUnit\Framework\assertEquals;
+
 beforeEach(function () {
     DB::enableQueryLog();
     TestModel::factory()->count(10)->create();
-    $this->baseQuery = 'select * from "test_models" where "test_models"."deleted_at" is null';
 });
 
 dataset('directions', [
@@ -26,22 +27,25 @@ it('can sort using fixed value', function (string $column, string $direction) {
     $query = TestModel::sort([
         Sort::make()->value([$column => $direction]),
     ]);
-    $query->get();
-    assertQueryExecuted($this->baseQuery . ' order by "' . $column . '" ' . $direction);
+    $expected = $query->pluck('id')->toArray();
+    $actual = TestModel::query()->orderBy($column, $direction)->pluck('id')->values()->toArray();
+    assertEquals($expected, $actual);
 })->with('columns')->with('directions');
 
 it('can sort by a single column', function (string $column, string $direction) {
     injectRequest(['sort' => [$column => $direction]]);
     $query = TestModel::sort();
-    $query->get();
-    assertQueryExecuted($this->baseQuery . ' order by "' . $column . '" ' . $direction);
+    $expected = $query->pluck('id')->toArray();
+    $actual = TestModel::query()->orderBy($column, $direction)->pluck('id')->values()->toArray();
+    assertEquals($expected, $actual);
 })->with('columns')->with('directions');
 
 it('can sort by multiple columns', function () {
     injectRequest(['sort' => ['name' => 'asc', 'id' => 'desc']]);
     $query = TestModel::sort();
-    $query->get();
-    assertQueryExecuted($this->baseQuery . ' order by "name" asc, "id" desc');
+    $expected = $query->pluck('id')->toArray();
+    $actual = TestModel::query()->orderBy('name', 'asc')->orderBy('id', 'desc')->pluck('id')->values()->toArray();
+    assertEquals($expected, $actual);
 });
 
 it('can sort ascending by a single column', function (string $column) {
@@ -49,8 +53,9 @@ it('can sort ascending by a single column', function (string $column) {
     $query = TestModel::sort([
         SortAscending::make(),
     ]);
-    $query->get();
-    assertQueryExecuted($this->baseQuery . ' order by "' . $column . '" asc');
+    $expected = $query->pluck('id')->toArray();
+    $actual = TestModel::query()->orderBy($column, 'asc')->pluck('id')->values()->toArray();
+    assertEquals($expected, $actual);
 })->with('columns');
 
 it('can sort ascending by multiple columns', function () {
@@ -58,8 +63,9 @@ it('can sort ascending by multiple columns', function () {
     $query = TestModel::sort([
         SortAscending::make(),
     ]);
-    $query->get();
-    assertQueryExecuted($this->baseQuery . ' order by "name" asc, "id" asc');
+    $expected = $query->pluck('id')->toArray();
+    $actual = TestModel::query()->orderBy('name', 'asc')->orderBy('id', 'asc')->pluck('id')->values()->toArray();
+    assertEquals($expected, $actual);
 });
 
 it('can sort descending by a single column', function (string $column) {
@@ -67,8 +73,9 @@ it('can sort descending by a single column', function (string $column) {
     $query = TestModel::sort([
         SortDescending::make(),
     ]);
-    $query->get();
-    assertQueryExecuted($this->baseQuery . ' order by "' . $column . '" desc');
+    $expected = $query->pluck('id')->toArray();
+    $actual = TestModel::query()->orderBy($column, 'desc')->pluck('id')->values()->toArray();
+    assertEquals($expected, $actual);
 })->with('columns');
 
 it('can sort descending by multiple columns', function () {
@@ -76,6 +83,7 @@ it('can sort descending by multiple columns', function () {
     $query = TestModel::sort([
         SortDescending::make(),
     ]);
-    $query->get();
-    assertQueryExecuted($this->baseQuery . ' order by "name" desc, "id" desc');
+    $expected = $query->pluck('id')->toArray();
+    $actual = TestModel::query()->orderBy('name', 'desc')->orderBy('id', 'desc')->pluck('id')->values()->toArray();
+    assertEquals($expected, $actual);
 });
