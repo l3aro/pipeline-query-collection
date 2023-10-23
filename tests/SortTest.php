@@ -19,7 +19,7 @@ dataset('directions', [
 
 dataset('columns', [
     'name',
-    'age',
+    'id',
 ]);
 
 it('can sort using fixed value', function (string $column, string $direction) {
@@ -38,10 +38,10 @@ it('can sort by a single column', function (string $column, string $direction) {
 })->with('columns')->with('directions');
 
 it('can sort by multiple columns', function () {
-    injectRequest(['sort' => ['name' => 'asc', 'age' => 'desc']]);
+    injectRequest(['sort' => ['name' => 'asc', 'id' => 'desc']]);
     $query = TestModel::sort();
     $query->get();
-    assertQueryExecuted($this->baseQuery . ' order by "name" asc, "age" desc');
+    assertQueryExecuted($this->baseQuery . ' order by "name" asc, "id" desc');
 });
 
 it('can sort ascending by a single column', function (string $column) {
