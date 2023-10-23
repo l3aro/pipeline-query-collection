@@ -10,6 +10,11 @@ class BitwiseFilter extends BaseFilter
         $this->field = $field;
     }
 
+    public static function make($field): static
+    {
+        return new static($field);
+    }
+
     protected function apply(): static
     {
         $flag = null;

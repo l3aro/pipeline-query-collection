@@ -22,6 +22,11 @@ class DateToFilter extends BaseFilter
         $this->motion = $motion;
     }
 
+    public static function make($field = 'created_at', MotionEnum|string $motion = null): static
+    {
+        return new static($field, $motion);
+    }
+
     protected function apply(): static
     {
         $operator = $this->motion === MotionEnum::FIND ? '<=' : '<';

@@ -43,19 +43,19 @@ it('can filter models by date from value', function () {
     // dump(TestModel::getConnectionResolver()->getDriverName());
     expect(TestModel::filter()->count())->toBe(4);
     expect(TestModel::filter([
-        new DateFromFilter('created_at', MotionEnum::TILL),
+        DateFromFilter::make('created_at', MotionEnum::TILL),
     ])->count())->toBe(0);
 
     injectRequest(['created_at_from' => '2020-01-01']);
     expect(TestModel::filter()->count())->toBe(7);
     expect(TestModel::filter([
-        new DateFromFilter('created_at', MotionEnum::TILL),
+        DateFromFilter::make('created_at', MotionEnum::TILL),
     ])->count())->toBe(4);
 
     injectRequest(['created_at_start' => '2020-01-01']);
     expect(TestModel::filter()->count())->toBe(7);
     expect(TestModel::filter([
-        (new DateFromFilter('created_at', MotionEnum::TILL))->setPostFix('start'),
+        DateFromFilter::make('created_at', MotionEnum::TILL)->setPostFix('start'),
     ])->count())->toBe(4);
 });
 
@@ -66,19 +66,19 @@ it('can filter models by date to value', function () {
     injectRequest(['created_at_to' => today()->addDays(4)->toDateString()]);
     expect(TestModel::filter()->count())->toBe(4);
     expect(TestModel::filter([
-        new DateToFilter('created_at', MotionEnum::TILL),
+        DateToFilter::make('created_at', MotionEnum::TILL),
     ])->count())->toBe(0);
 
     injectRequest(['created_at_end' => today()->addDays(4)->toDateString()]);
     expect(TestModel::filter()->count())->toBe(4);
     expect(TestModel::filter([
-        (new DateToFilter('created_at', MotionEnum::TILL))->setPostFix('end'),
+        DateToFilter::make('created_at', MotionEnum::TILL)->setPostFix('end'),
     ])->count())->toBe(0);
 
     injectRequest(['created_at_to' => today()->addDays(7)]);
     expect(TestModel::filter()->count())->toBe(11);
     expect(TestModel::filter([
-        new DateToFilter('created_at', MotionEnum::TILL),
+        DateToFilter::make('created_at', MotionEnum::TILL),
     ])->count())->toBe(4);
 
     injectRequest(['created_at_to' => today()->subDays(7)->toDateString()]);
@@ -130,22 +130,22 @@ it('can filter models by relative value', function () {
 
     injectRequest(['name' => 'aro']);
     expect(TestModel::filter([
-        new RelativeFilter('name', WildcardPositionEnum::RIGHT),
+        RelativeFilter::make('name', WildcardPositionEnum::RIGHT),
     ])->count())->toBe(0);
 
     injectRequest(['name' => 'Baro']);
     expect(TestModel::filter([
-        new RelativeFilter('name', WildcardPositionEnum::RIGHT),
+        RelativeFilter::make('name', WildcardPositionEnum::RIGHT),
     ])->count())->toBe(1);
 
     injectRequest(['name' => 'ni']);
     expect(TestModel::filter([
-        new RelativeFilter('name', WildcardPositionEnum::LEFT),
+        RelativeFilter::make('name', WildcardPositionEnum::LEFT),
     ])->count())->toBe(0);
 
     injectRequest(['name' => 'nil']);
     expect(TestModel::filter([
-        new RelativeFilter('name', WildcardPositionEnum::LEFT),
+        RelativeFilter::make('name', WildcardPositionEnum::LEFT),
     ])->count())->toBe(1);
 });
 
@@ -169,7 +169,7 @@ it('can filter models with prefix detect key', function () {
 
     injectRequest(['filter' => ['name' => 'Baro']]);
     expect(TestModel::filter([
-        (new RelativeFilter('name'))->detectBy('filter.')
+        RelativeFilter::make('name')->detectBy('filter.')
     ])->count())->toBe(1);
 });
 
@@ -179,7 +179,7 @@ it('can filter models with custom column search', function () {
 
     injectRequest(['title' => 'Baro']);
     expect(TestModel::filter([
-        (new RelativeFilter('title'))->filterOn('name')
+        RelativeFilter::make('title')->filterOn('name')
     ])->count())->toBe(1);
 });
 

@@ -21,6 +21,11 @@ class RelativeFilter extends BaseFilter
         $this->wildcardPosition = $wildcardPosition;
     }
 
+    public static function make($field, WildcardPositionEnum|string $wildcardPosition = null): static
+    {
+        return new static($field, $wildcardPosition);
+    }
+
     protected function apply(): static
     {
         foreach ($this->getSearchValue() as $value) {

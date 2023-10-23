@@ -6,8 +6,8 @@ use Baro\PipelineQueryCollection\Enums\MotionEnum;
 
 class DateFromFilter extends BaseFilter
 {
-    private MotionEnum|string|null $motion;
-    private $postfix = null;
+    protected MotionEnum|string|null $motion;
+    protected $postfix = null;
 
     public function __construct($field = 'created_at', MotionEnum|string $motion = null)
     {
@@ -20,6 +20,11 @@ class DateFromFilter extends BaseFilter
             $motion = MotionEnum::from($motion);
         }
         $this->motion = $motion;
+    }
+
+    public static function make($field = 'created_at', MotionEnum|string $motion = null): static
+    {
+        return new static($field, $motion);
     }
 
     protected function apply(): static

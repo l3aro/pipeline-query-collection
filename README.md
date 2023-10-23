@@ -32,10 +32,10 @@ use Baro\PipelineQueryCollection;
 
 // users?name=Baro&is_admin=1&created_at_from=2022-06-01&created_at_to=2022-06-31
 $users = Users::query()->filter([
-    new PipelineQueryCollection\RelativeFilter('name'),
-    new PipelineQueryCollection\BooleanFilter('is_admin'),
-    new PipelineQueryCollection\DateFromFilter('created_at'),
-    new PipelineQueryCollection\DateToFilter('created_at'),
+    PipelineQueryCollection\RelativeFilter::make('name'),
+    PipelineQueryCollection\BooleanFilter::make('is_admin'),
+    PipelineQueryCollection\DateFromFilter::make('created_at'),
+    PipelineQueryCollection\DateToFilter::make('created_at'),
 ])
 ->get();
 ```
@@ -146,7 +146,7 @@ use Baro\PipelineQueryCollection\BitwiseFilter;
 
 // users?permission[0]=2&permission[1]=4
 User::query()->filter([
-    new BitwiseFilter('permission'), // where permission & 6 = 6
+    BitwiseFilter::make('permission'), // where permission & 6 = 6
 ]);
 ```
 
@@ -157,7 +157,7 @@ use Baro\PipelineQueryCollection\BooleanFilter;
 
 // users?is_admin=1
 User::query()->filter([
-    new BooleanFilter('is_admin'), // where is_admin = 1
+    BooleanFilter::make('is_admin'), // where is_admin = 1
 ]);
 ```
 
@@ -168,8 +168,8 @@ use Baro\PipelineQueryCollection\Enums\MotionEnum;
 
 // users?updated_at_from=2022-05-31
 User::query()->filter([
-    new DateFromFilter('updated_at'), // where updated_at >= 2022-05-31
-    new DateFromFilter('updated_at', MotionEnum::TILL), // where updated_at > 2022-05-31
+    DateFromFilter::make('updated_at'), // where updated_at >= 2022-05-31
+    DateFromFilter::make('updated_at', MotionEnum::TILL), // where updated_at > 2022-05-31
     // you can config default motion behavior and the postfix `from` in the config file
 ]);
 ```
@@ -181,8 +181,8 @@ use Baro\PipelineQueryCollection\Enums\MotionEnum;
 
 // users?updated_at_to=2022-05-31
 User::query()->filter([
-    new DateToFilter('updated_at'), // where updated_at <= 2022-05-31
-    new DateToFilter('updated_at', MotionEnum::TILL), // where updated_at < 2022-05-31
+    DateToFilter::make('updated_at'), // where updated_at <= 2022-05-31
+    DateToFilter::make('updated_at', MotionEnum::TILL), // where updated_at < 2022-05-31
     // you can config default motion behavior and the postfix `to` in the config file
 ]);
 ```
@@ -193,7 +193,7 @@ use Baro\PipelineQueryCollection\ExactFilter;
 
 // users?id=4
 User::query()->filter([
-    new ExactFilter('id'), // where id = 4
+    ExactFilter::make('id'), // where id = 4
 ]);
 ```
 
@@ -203,7 +203,7 @@ use Baro\PipelineQueryCollection\RelationFilter;
 
 // users?roles_id[0]=1&roles_id[1]=4
 User::query()->filter([
-    new RelationFilter('roles', 'id'), // where roles.id in(1,4)
+    RelationFilter::make('roles', 'id'), // where roles.id in(1,4)
 ]);
 ```
 
@@ -215,9 +215,9 @@ use Baro\PipelineQueryCollection\Enums\WildcardPositionEnum;
 
 // users?name=Baro
 User::query()->filter([
-    new RelativeFilter('name'), // where('name', 'like', "%Baro%")
-    new RelativeFilter('name', WildcardPositionEnum::LEFT), // where('name', 'like', "%Baro")
-    new RelativeFilter('name', WildcardPositionEnum::RIGHT), // where('name', 'like', "Baro%")
+    RelativeFilter::make('name'), // where('name', 'like', "%Baro%")
+    RelativeFilter::make('name', WildcardPositionEnum::LEFT), // where('name', 'like', "%Baro")
+    RelativeFilter::make('name', WildcardPositionEnum::RIGHT), // where('name', 'like', "Baro%")
 ]);
 ```
 
@@ -238,7 +238,7 @@ public function scopeSearch(Builder $query, string $keyword)
 use Baro\PipelineQueryCollection\ScopeFilter;
 
 User::query()->filter([
-    new ScopeFilter('search'), // where (`id` = 'Baro' or `name` like '%Baro%')
+    ScopeFilter::make('search'), // where (`id` = 'Baro' or `name` like '%Baro%')
 ]);
 ```
 
@@ -257,7 +257,7 @@ use Baro\PipelineQueryCollection\TrashFilter;
 
 // ?removed=only
 User::query()->filter([
-    new TrashFilter('removed'), // where `deleted_at` is not null
+    TrashFilter::make('removed'), // where `deleted_at` is not null
 ]);
 ```
 
@@ -267,7 +267,7 @@ use Baro\PipelineQueryCollection\ScopeFilter;
 
 // users?sort[name]=asc&sort[permission]=desc
 User::query()->filter([
-    new Sort(), //  order by `name` asc, `permission` desc
+    Sort::make(), //  order by `name` asc, `permission` desc
 ]);
 ```
 
@@ -278,8 +278,8 @@ use Baro\PipelineQueryCollection\ExactFilter;
 
 // users?filter[id]=4&filter[permission][0]=1&filter[permission][1]=4
 User::query()->filter([
-    (new ExactFilter('id'))->detectBy('filter.'), // where id = 4
-    (new BitwiseFilter('permission'))->detectBy('filter.'), // where permission & 5 = 5
+    ExactFilter::make('id')->detectBy('filter.'), // where id = 4
+    BitwiseFilter::make('permission')->detectBy('filter.'), // where permission & 5 = 5
 ]);
 ```
 
@@ -292,8 +292,8 @@ PIPELINE_QUERY_COLLECTION_DETECT_KEY="filter."
 
 // Query
 User::query()->filter([
-    new ExactFilter('id'), // where id = 4
-    new BitwiseFilter('permission'), // where permission & 5 = 5
+    ExactFilter::make('id'), // where id = 4
+    BitwiseFilter::make('permission'), // where permission & 5 = 5
 ]);
 ```
 
@@ -305,7 +305,7 @@ Sometimes, your request field is not the same with column name. For example, in 
 // users?reply=baro
 
 User::query()->filter([
-    (new RelativeFilter('reply'))->filterOn('respond'), // where respond like '%baro%'
+    RelativeFilter::make('reply')->filterOn('respond'), // where respond like '%baro%'
 ]);
 ```
 

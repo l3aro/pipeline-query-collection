@@ -10,6 +10,11 @@ class ScopeFilter extends BaseFilter
         $this->field = $scopeName;
     }
 
+    public static function make($scopeName): static
+    {
+        return new static($scopeName);
+    }
+
     protected function apply(): static
     {
         $scopeName = str($this->getSearchColumn())->camel()->toString();

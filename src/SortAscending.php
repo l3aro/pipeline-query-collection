@@ -4,9 +4,9 @@ namespace Baro\PipelineQueryCollection;
 
 class SortAscending extends BaseSort
 {
-    public function __construct()
+    public static function make(): static
     {
-        parent::__construct();
+        return new static;
     }
 
     protected function apply(): static

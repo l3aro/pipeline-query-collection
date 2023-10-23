@@ -31,23 +31,23 @@ class TestModel extends Model
     protected function getFilters()
     {
         return [
-            new BitwiseFilter('type_flag'),
-            new BooleanFilter('is_visible'),
-            new DateFromFilter('created_at'),
-            new DateToFilter('created_at'),
-            new ExactFilter('updated_at'),
-            new RelationFilter('belongs_to_related_models', 'id'),
-            new RelationFilter('belongs_to_many_related_models', 'id'),
-            new RelativeFilter('name'),
-            new ScopeFilter('search'),
-            new TrashFilter,
+            BitwiseFilter::make('type_flag'),
+            BooleanFilter::make('is_visible'),
+            DateFromFilter::make('created_at'),
+            DateToFilter::make('created_at'),
+            ExactFilter::make('updated_at'),
+            RelationFilter::make('belongs_to_related_models', 'id'),
+            RelationFilter::make('belongs_to_many_related_models', 'id'),
+            RelativeFilter::make('name'),
+            ScopeFilter::make('search'),
+            TrashFilter::make(),
         ];
     }
 
     protected function getSorts()
     {
         return [
-            new Sort,
+            Sort::make(),
         ];
     }
 

@@ -12,6 +12,11 @@ class TrashFilter extends BaseFilter
         $this->field = $field;
     }
 
+    public static function make($field = 'trashed'): static
+    {
+        return new static($field);
+    }
+
     protected function apply(): static
     {
         $option = TrashOptionEnum::tryFrom($this->getSearchValue()[0]);

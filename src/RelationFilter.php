@@ -15,6 +15,11 @@ class RelationFilter extends BaseFilter
         $this->field = $field;
     }
 
+    public static function make($relation, $field): static
+    {
+        return new static($relation, $field);
+    }
+
     protected function getFilterName(): string
     {
         return "{$this->detector}{$this->relation}_{$this->field}";

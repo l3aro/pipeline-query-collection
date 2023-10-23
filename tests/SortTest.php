@@ -32,7 +32,7 @@ it('can sort by multiple columns', function () {
 it('can sort ascending by a single column', function () {
     injectRequest(['sort' => ['name']]);
     $query = TestModel::sort([
-        new SortAscending,
+        SortAscending::make(),
     ]);
     $query->get();
     assertQueryExecuted($query->toSql());
@@ -41,7 +41,7 @@ it('can sort ascending by a single column', function () {
 it('can sort ascending by multiple columns', function () {
     injectRequest(['sort' => ['name', 'id']]);
     $query = TestModel::sort([
-        new SortAscending,
+        SortAscending::make(),
     ]);
     $query->get();
     assertQueryExecuted($query->toSql());
@@ -50,7 +50,7 @@ it('can sort ascending by multiple columns', function () {
 it('can sort descending by a single column', function () {
     injectRequest(['sort' => ['name']]);
     $query = TestModel::sort([
-        new SortDescending,
+        SortDescending::make(),
     ]);
     $query->get();
     assertQueryExecuted($query->toSql());
@@ -59,7 +59,7 @@ it('can sort descending by a single column', function () {
 it('can sort descending by multiple columns', function () {
     injectRequest(['sort' => ['name', 'id']]);
     $query = TestModel::sort([
-        new SortDescending,
+        SortDescending::make(),
     ]);
     $query->get();
     assertQueryExecuted($query->toSql());
