@@ -4,7 +4,7 @@ namespace Baro\PipelineQueryCollection;
 
 use Baro\PipelineQueryCollection\Enums\WildcardPositionEnum;
 
-final class RelativeFilter extends BaseFilter
+class RelativeFilter extends BaseFilter
 {
     private $wildcardPosition;
 
@@ -21,7 +21,7 @@ final class RelativeFilter extends BaseFilter
         $this->wildcardPosition = $wildcardPosition;
     }
 
-    public static function make($field, WildcardPositionEnum|string $wildcardPosition = null): static
+    public static function make($field, WildcardPositionEnum|string $wildcardPosition = null)
     {
         return new self($field, $wildcardPosition);
     }

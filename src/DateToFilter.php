@@ -4,7 +4,7 @@ namespace Baro\PipelineQueryCollection;
 
 use Baro\PipelineQueryCollection\Enums\MotionEnum;
 
-final class DateToFilter extends BaseFilter
+class DateToFilter extends BaseFilter
 {
     private MotionEnum|string|null $motion;
 
@@ -23,7 +23,7 @@ final class DateToFilter extends BaseFilter
         $this->motion = $motion;
     }
 
-    public static function make($field = 'created_at', MotionEnum|string $motion = null): static
+    public static function make($field = 'created_at', MotionEnum|string $motion = null)
     {
         return new self($field, $motion);
     }

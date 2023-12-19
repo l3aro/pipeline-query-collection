@@ -2,9 +2,9 @@
 
 namespace Baro\PipelineQueryCollection;
 
-final class SortDescending extends BaseSort
+class SortDescending extends BaseSort
 {
-    public static function make(): static
+    public static function make()
     {
         return new self;
     }

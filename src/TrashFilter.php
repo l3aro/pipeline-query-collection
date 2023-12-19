@@ -4,7 +4,7 @@ namespace Baro\PipelineQueryCollection;
 
 use Baro\PipelineQueryCollection\Enums\TrashOptionEnum;
 
-final class TrashFilter extends BaseFilter
+class TrashFilter extends BaseFilter
 {
     public function __construct($field = 'trashed')
     {
@@ -12,7 +12,7 @@ final class TrashFilter extends BaseFilter
         $this->field = $field;
     }
 
-    public static function make($field = 'trashed'): static
+    public static function make($field = 'trashed')
     {
         return new self($field);
     }

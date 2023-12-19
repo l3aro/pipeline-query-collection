@@ -2,7 +2,7 @@
 
 namespace Baro\PipelineQueryCollection;
 
-final class BooleanFilter extends BaseFilter
+class BooleanFilter extends BaseFilter
 {
     public function __construct($field)
     {
@@ -10,7 +10,7 @@ final class BooleanFilter extends BaseFilter
         $this->field = $field;
     }
 
-    public static function make($field): static
+    public static function make($field)
     {
         return new self($field);
     }

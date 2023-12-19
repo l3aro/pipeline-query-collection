@@ -2,7 +2,7 @@
 
 namespace Baro\PipelineQueryCollection;
 
-final class ScopeFilter extends BaseFilter
+class ScopeFilter extends BaseFilter
 {
     public function __construct($scopeName)
     {
@@ -10,7 +10,7 @@ final class ScopeFilter extends BaseFilter
         $this->field = $scopeName;
     }
 
-    public static function make($scopeName): static
+    public static function make($scopeName)
     {
         return new self($scopeName);
     }

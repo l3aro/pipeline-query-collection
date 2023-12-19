@@ -2,7 +2,7 @@
 
 namespace Baro\PipelineQueryCollection;
 
-final class ExactFilter extends BaseFilter
+class ExactFilter extends BaseFilter
 {
     public function __construct($field)
     {
@@ -10,7 +10,7 @@ final class ExactFilter extends BaseFilter
         $this->field = $field;
     }
 
-    public static function make($field): static
+    public static function make($field)
     {
         return new self($field);
     }
