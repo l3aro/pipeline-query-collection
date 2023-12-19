@@ -93,7 +93,11 @@ abstract class BaseFilter extends BasePipe
 
     protected function shouldFilter(string $key)
     {
-        if (!$this->request->has($key)) {
+       if (isset($this->searchValue)) {
+            return true;
+       }
+
+       if (!$this->request->has($key)) {
             return false;
         }
 
