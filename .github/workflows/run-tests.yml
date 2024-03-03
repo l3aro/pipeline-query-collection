@@ -1,76 +1,80 @@
 name: run-tests
 
-on: [push, pull_request]
+on:
+  - push
+  - pull_request
 
 jobs:
-    test:
-        runs-on: ${{ matrix.os }}
-        strategy:
-            fail-fast: false
-            matrix:
-                os: [ubuntu-latest]
-                php: [8.1]
-                laravel: [10.*]
-                stability: [prefer-lowest, prefer-stable]
-                include:
-                    - laravel: 10.*
+  test:
+    runs-on: ${{ matrix.os }}
 
-        name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }} - ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        php: [8.1, '8.2']
+        laravel: ['10.*', '11.*']
+        stability: [prefer-lowest, prefer-stable]
+        include:
+          - laravel: 10.*
+          - laravel: 11.*
+        exclude:
+          - laravel: 11.*
+            php: 8.1
 
-        services:
-            mysql:
-                image: mysql:8.0
-                env:
-                    MYSQL_USER: user
-                    MYSQL_PASSWORD: secret
-                    MYSQL_DATABASE: query_test
-                    MYSQL_ROOT_PASSWORD: secretroot
-                ports:
-                    - 3306
-                options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+    name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }} - ${{ matrix.os }}
 
-            redis:
-                image: redis
-                ports:
-                    - 6379:6379
-                options: >-
-                    --health-cmd "redis-cli ping"
-                    --health-interval 10s
-                    --health-timeout 5s
-                    --health-retries 5
-        steps:
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_USER: user
+          MYSQL_PASSWORD: secret
+          MYSQL_DATABASE: query_test
+          MYSQL_ROOT_PASSWORD: secretroot
+        ports:
+          - 3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+      redis:
+        image: redis
+        ports:
+          - 6379:6379
+        options: --health-cmd "redis-cli ping" --health-interval 10s --health-timeout 5s --health-retries 5
 
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-            - name: Checkout code
-              uses: actions/checkout@v4
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
+          coverage: none
 
-            - name: Setup PHP
-              uses: shivammathur/setup-php@v2
-              with:
-                  php-version: ${{ matrix.php }}
-                  extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
-                  coverage: none
+      - name: Setup problem matchers
+        run: |
+          echo "::add-matcher::${{ runner.tool_cache }}/php.json"
+          echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
-            - name: Setup problem matchers
-              run: |
-                  echo "::add-matcher::${{ runner.tool_cache }}/php.json"
-                  echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
-            - name: Install dependencies
-              run: |
-                  composer require "laravel/framework:${{ matrix.laravel }}" --no-interaction --no-update
-                  composer update --${{ matrix.stability }} --prefer-dist --no-interaction
-            - name: Execute tests with MySQL
-              run: vendor/bin/pest
-              env:
-                  DB_CONNECTION: mysql
-                  DB_DATABASE: query_test
-                  DB_USERNAME: user
-                  DB_PASSWORD: secret
-                  DB_PORT: ${{ job.services.mysql.ports[3306] }}
-                  REDIS_PORT: 6379
-            - name: Execute tests with SQLite
-              run: vendor/bin/pest
-              env:
-                  DB_CONNECTION: sqlite
-                  DB_DATABASE: ":memory:"
-                  REDIS_PORT: 6379
+      - name: Install dependencies
+        run: |
+          composer require "laravel/framework:${{ matrix.laravel }}" --no-interaction --no-update
+          composer update --${{ matrix.stability }} --prefer-dist --no-interaction
+
+      - name: Execute tests with MySQL
+        run: vendor/bin/pest
+        env:
+          DB_CONNECTION: mysql
+          DB_DATABASE: query_test
+          DB_USERNAME: user
+          DB_PASSWORD: secret
+          DB_PORT: ${{ job.services.mysql.ports[3306] }}
+          REDIS_PORT: 6379
+
+      - name: Execute tests with SQLite
+        run: vendor/bin/pest
+        env:
+          DB_CONNECTION: sqlite
+          DB_DATABASE: :memory:
+          REDIS_PORT: 6379
