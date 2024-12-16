@@ -1,4 +1,3 @@
-
 ## A query database collection for use with Laravel Pipeline
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/l3aro/pipeline-query-collection.svg?style=flat-square)](https://packagist.org/packages/l3aro/pipeline-query-collection)
@@ -25,7 +24,7 @@ $users = User::query()
     ->get();
 ```
 
-As you all can see,  it's obviously that filter conditions will continue to grow as well as the duplication of same filter for other queries. We can use Laravel Pipeline combine with some pre-made queries to refactor this
+As you all can see, it's obviously that filter conditions will continue to grow as well as the duplication of same filter for other queries. We can use Laravel Pipeline combine with some pre-made queries to refactor this
 
 ```php
 use Baro\PipelineQueryCollection;
@@ -42,31 +41,32 @@ $users = Users::query()->filter([
 
 ## Table of Contents
 
-* [A query database collection for use with Laravel Pipeline](#a-query-database-collection-for-use-with-laravel-pipeline)
-* [Table of Contents](#table-of-contents)
-* [Installation](#installation)
-* [Usage](#usage)
-    * [Preparing your model](#preparing-your-model)
-    * [Feature](#feature)
-        * [Bitwise filter](#bitwise-filter)
-        * [Boolean filter](#boolean-filter)
-        * [Date From filter](#date-from-filter)
-        * [Date To filter](#date-to-filter)
-        * [Exact filter](#exact-filter)
-        * [Relation filter](#relation-filter)
-        * [Relative filter](#relative-filter)
-        * [Scope filter](#scope-filter)
-        * [Trash filter](#trash-filter)
-        * [Sort](#sort)
-    * [Detector](#detector)
-    * [Custom search column](#custom-search-column)
-    * [Custom search value](#custom-search-value)
-    * [Extend filter](#extend-filter)
-* [Testing](#testing)
-* [Contributing](#contributing)
-* [Security Vulnerabilities](#security-vulnerabilities)
-* [Credits](#credits)
-* [License](#license)
+-   [A query database collection for use with Laravel Pipeline](#a-query-database-collection-for-use-with-laravel-pipeline)
+-   [Table of Contents](#table-of-contents)
+-   [Installation](#installation)
+-   [Usage](#usage)
+    -   [Preparing your model](#preparing-your-model)
+    -   [Feature](#feature)
+        -   [Bitwise filter](#bitwise-filter)
+        -   [Boolean filter](#boolean-filter)
+        -   [Date From filter](#date-from-filter)
+        -   [Range Filter](#range-filter)
+        -   [Date To filter](#date-to-filter)
+        -   [Exact filter](#exact-filter)
+        -   [Relation filter](#relation-filter)
+        -   [Relative filter](#relative-filter)
+        -   [Scope filter](#scope-filter)
+        -   [Trash filter](#trash-filter)
+        -   [Sort](#sort)
+    -   [Detector](#detector)
+    -   [Custom search column](#custom-search-column)
+    -   [Custom search value](#custom-search-value)
+    -   [Extend filter](#extend-filter)
+-   [Testing](#testing)
+-   [Contributing](#contributing)
+-   [Security Vulnerabilities](#security-vulnerabilities)
+-   [Credits](#credits)
+-   [License](#license)
 
 ## Installation
 
@@ -99,7 +99,9 @@ return [
 ```
 
 ## Usage
+
 ### Preparing your model
+
 To use this collection with a model, you should implement the following interface and trait:
 
 ```php
@@ -138,6 +140,7 @@ YourModel::query()->filter([
 ```
 
 ### Feature
+
 Here the use all filter and sort in the collection
 
 #### Bitwise filter
@@ -163,6 +166,7 @@ User::query()->filter([
 ```
 
 #### Date From filter
+
 ```php
 use Baro\PipelineQueryCollection\DateFromFilter;
 use Baro\PipelineQueryCollection\Enums\MotionEnum;
@@ -176,6 +180,7 @@ User::query()->filter([
 ```
 
 #### Date To filter
+
 ```php
 use Baro\PipelineQueryCollection\DateToFilter;
 use Baro\PipelineQueryCollection\Enums\MotionEnum;
@@ -188,7 +193,27 @@ User::query()->filter([
 ]);
 ```
 
+# Range Filter
+
+```php
+use Modules\Core\Filters\RangeFromFilter;
+use Modules\Core\Filters\RangeToFilter;
+
+// Example: products?price_from=100&price_to=500
+Product::query()->filter([
+    RangeFromFilter::make('price'), // Adds where price >= 100
+    RangeToFilter::make('price'),   // Adds where price <= 500
+]);
+
+// Example: clients?age_min=18&age_max=65
+Client::query()->filter([
+    RangeFromFilter::make('age')->setPostFix('min'), // Adds where age >= 18
+    RangeToFilter::make('age')->setPostFix('max'),   // Adds where age <= 65
+]);
+```
+
 #### Exact filter
+
 ```php
 use Baro\PipelineQueryCollection\ExactFilter;
 
@@ -199,6 +224,7 @@ User::query()->filter([
 ```
 
 #### Relation filter
+
 ```php
 use Baro\PipelineQueryCollection\RelationFilter;
 
@@ -223,6 +249,7 @@ User::query()->filter([
 ```
 
 #### Scope filter
+
 ```php
 // users?search=Baro
 
@@ -246,23 +273,26 @@ User::query()->filter([
 #### Trash filter
 
 When using Laravel's [soft delete](https://laravel.com/docs/master/eloquent#querying-soft-deleted-models), you can use the pipe `TrashFilter`
- to query these models. The default query name is `trashed`, and filters responds to particular values:
- * `with`: the query should be `?trashed=with` to include soft deleted records to the result set
- * `only`: the query should be `?trashed=only` to return only soft deleted records to the result set
- * any other value, or completely remove `trashed` from request query will return only records that are not soft deleted in the result set
+to query these models. The default query name is `trashed`, and filters responds to particular values:
 
- You can change query name `trashed` by passing your custom name to the `TrashFilter` constructor
- ```php
+-   `with`: the query should be `?trashed=with` to include soft deleted records to the result set
+-   `only`: the query should be `?trashed=only` to return only soft deleted records to the result set
+-   any other value, or completely remove `trashed` from request query will return only records that are not soft deleted in the result set
+
+You can change query name `trashed` by passing your custom name to the `TrashFilter` constructor
+
+```php
 use Baro\PipelineQueryCollection\TrashFilter;
 
 
 // ?removed=only
 User::query()->filter([
-    TrashFilter::make('removed'), // where `deleted_at` is not null
+   TrashFilter::make('removed'), // where `deleted_at` is not null
 ]);
 ```
 
 #### Sort
+
 ```php
 use Baro\PipelineQueryCollection\ScopeFilter;
 
@@ -273,7 +303,9 @@ User::query()->filter([
 ```
 
 ### Detector
+
 Sometimes, you want to setup your request with a prefix like `filter.`. You can config every pipe that have it
+
 ```php
 use Baro\PipelineQueryCollection\ExactFilter;
 
@@ -285,6 +317,7 @@ User::query()->filter([
 ```
 
 Or, you can define it globally
+
 ```php
 // users?filter[id]=4&filter[permission][0]=1&filter[permission][1]=4
 
@@ -319,7 +352,9 @@ User::query()->filter([
     RelativeFilter::make('name')->value('Baro'), // where('name', 'like', "%Baro%")
 ]);
 ```
+
 ### Extend filter
+
 Yeah, you are free to use your own pipe. Take a look at some of my filters. All of them extends `BaseFilter` to have some useful properties and functions.
 
 ## Testing
@@ -338,8 +373,8 @@ Please review [our security policy](../../security/policy) on how to report secu
 
 ## Credits
 
-- [l3aro](https://github.com/l3aro)
-- [All Contributors](../../contributors)
+-   [l3aro](https://github.com/l3aro)
+-   [All Contributors](../../contributors)
 
 ## License
 

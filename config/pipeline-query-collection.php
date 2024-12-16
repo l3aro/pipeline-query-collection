@@ -18,4 +18,8 @@ return [
 
     // default motion for date filters, can be 'find' or 'till'
     'date_motion' => env('PIPELINE_QUERY_COLLECTION_DATE_MOTION', 'find'),
+
+    // type of postfix for range filters
+    'range_from_postfix' => env('PIPELINE_QUERY_COLLECTION_RANGE_FROM_POSTFIX', 'from'),
+    'range_to_postfix' => env('PIPELINE_QUERY_COLLECTION_RANGE_TO_POSTFIX', 'to'),
 ];
