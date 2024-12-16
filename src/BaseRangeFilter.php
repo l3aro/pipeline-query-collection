@@ -1,8 +1,6 @@
 <?php
 
-namespace Modules\Core\Filters;
-
-use Baro\PipelineQueryCollection\BaseFilter;
+namespace Baro\PipelineQueryCollection;
 
 abstract class BaseRangeFilter extends BaseFilter
 {

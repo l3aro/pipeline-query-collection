@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Core\Filters;
+namespace Baro\PipelineQueryCollection;
 
 final class RangeToFilter extends BaseRangeFilter
 {

@@ -196,8 +196,8 @@ User::query()->filter([
 # Range Filter
 
 ```php
-use Modules\Core\Filters\RangeFromFilter;
-use Modules\Core\Filters\RangeToFilter;
+use Baro\PipelineQueryCollection\RangeFromFilter;
+use Baro\PipelineQueryCollection\RangeToFilter;
 
 // Example: products?price_from=100&price_to=500
 Product::query()->filter([
