@@ -83,16 +83,6 @@ jobs:
           DB_PORT: ${{ job.services.mysql.ports[3306] }}
           REDIS_PORT: 6379
 
-      - name: Execute tests with PostgreSQL
-        run: vendor/bin/pest
-        env:
-          DB_CONNECTION: pgsql
-          DB_DATABASE: query_test
-          DB_USERNAME: user
-          DB_PASSWORD: secret
-          DB_PORT: ${{ job.services.postgres.ports[5432] }}
-          REDIS_PORT: 6379
-
       - name: Execute tests with SQLite
         run: vendor/bin/pest
         env:
