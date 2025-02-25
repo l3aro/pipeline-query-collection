@@ -27,6 +27,11 @@ class FieldsRelativeFilter extends BaseFilter
         return new self($field, $columns, $wildcardPosition);
     }
 
+    protected function getSearchColumns()
+    {
+        return $this->searchColumns ?? $this->field;
+    }
+
     protected function apply(): static
     {
         foreach ($this->getSearchValue() as $value) {

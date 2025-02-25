@@ -79,11 +79,6 @@ abstract class BaseFilter extends BasePipe
         return $this;
     }
 
-    protected function getSearchColumns()
-    {
-        return $this->searchColumns ?? $this->field;
-    }
-
     public function ignore(mixed $ignore = '')
     {
         $this->ignore = $ignore;
