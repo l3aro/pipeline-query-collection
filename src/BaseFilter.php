@@ -12,6 +12,8 @@ abstract class BaseFilter extends BasePipe
 
     protected ?string $searchColumn = null;
 
+    protected mixed $searchColumns;
+
     protected mixed $searchValue = null;
 
     public function __construct()
@@ -70,6 +72,18 @@ abstract class BaseFilter extends BasePipe
         return $this->searchColumn ?? $this->field;
     }
 
+    public function filterOnColumns(mixed $searchColumns)
+    {
+        $this->searchColumns = $searchColumns;
+
+        return $this;
+    }
+
+    protected function getSearchColumns()
+    {
+        return $this->searchColumns ?? $this->field;
+    }
+
     public function ignore(mixed $ignore = '')
     {
         $this->ignore = $ignore;
@@ -93,11 +107,11 @@ abstract class BaseFilter extends BasePipe
 
     protected function shouldFilter(string $key)
     {
-       if (isset($this->searchValue)) {
+        if (isset($this->searchValue)) {
             return true;
-       }
+        }
 
-       if (!$this->request->has($key)) {
+        if (!$this->request->has($key)) {
             return false;
         }
 
