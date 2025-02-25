@@ -103,5 +103,5 @@ jobs:
         run: vendor/bin/pest
         env:
           DB_CONNECTION: sqlite
-          DB_DATABASE: :memory:
+          DB_DATABASE: ":memory:"
           REDIS_PORT: 6379
