@@ -220,9 +220,9 @@ it('can filter many columns with one field', function () {
     TestModel::factory()->create(['name' => 'Baro', 'title' => 'Joe']);
     TestModel::factory()->create(['name' => 'Billy', 'title' => 'Nil']);
 
-    injectRequest(['name' => 'Baro']);
+    injectRequest(['search' => 'Baro']);
 
     expect(TestModel::filter([
-        FieldsRelativeFilter::make('name', ['name', 'title']),
+        FieldsRelativeFilter::make('search', ['name', 'title']),
     ])->count())->toBe(2);
 });
