@@ -7,7 +7,7 @@ use Illuminate\Pipeline\Pipeline;
 
 trait Filterable
 {
-    public function scopeFilter(Builder $query, array $criteria = null): Builder
+    public function scopeFilter(Builder $query, ?array $criteria = null): Builder
     {
         $criteria = is_null($criteria) ? $this->filterCriteria() : $criteria;
 

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 interface CanSortContract
 {
-    public function scopeSort(Builder $query, array $criteria = null): Builder;
+    public function scopeSort(Builder $query, ?array $criteria = null): Builder;
 
     public function sortCriteria(): array;
 }

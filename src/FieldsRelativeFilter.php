@@ -8,7 +8,7 @@ class FieldsRelativeFilter extends BaseFilter
 {
     private $wildcardPosition;
 
-    public function __construct($field, $columns, WildcardPositionEnum|string $wildcardPosition = null)
+    public function __construct($field, $columns, WildcardPositionEnum|string|null $wildcardPosition = null)
     {
         parent::__construct();
         $this->field = $field;
@@ -22,7 +22,7 @@ class FieldsRelativeFilter extends BaseFilter
         $this->wildcardPosition = $wildcardPosition;
     }
 
-    public static function make($field, $columns, WildcardPositionEnum|string $wildcardPosition = null)
+    public static function make($field, $columns, WildcardPositionEnum|string|null $wildcardPosition = null)
     {
         return new self($field, $columns, $wildcardPosition);
     }
@@ -30,10 +30,13 @@ class FieldsRelativeFilter extends BaseFilter
     protected function apply(): static
     {
         foreach ($this->getSearchValue() as $value) {
-            foreach ($this->getSearchColumns() as $column) {
-                $this->query->where($column, 'like', $this->computeSearchValue($value));
-            }
+            $this->query->whereNested(function ($query) use ($value) {
+                foreach ($this->getSearchColumns() as $column) {
+                    $query->orWhere($column, 'like', $this->computeSearchValue($value));
+                }
+            });
         }
+
         return $this;
     }
 

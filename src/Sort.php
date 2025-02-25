@@ -6,7 +6,7 @@ class Sort extends BaseSort
 {
     public static function make()
     {
-        return new self;
+        return new self();
     }
 
     protected function apply(): static

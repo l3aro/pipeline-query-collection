@@ -7,7 +7,7 @@ use Illuminate\Pipeline\Pipeline;
 
 trait Sortable
 {
-    public function scopeSort(Builder $query, array $criteria = null): Builder
+    public function scopeSort(Builder $query, ?array $criteria = null): Builder
     {
         $criteria = is_null($criteria) ? $this->sortCriteria() : $criteria;
 

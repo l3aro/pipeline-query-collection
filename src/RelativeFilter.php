@@ -8,7 +8,7 @@ class RelativeFilter extends BaseFilter
 {
     private $wildcardPosition;
 
-    public function __construct($field, WildcardPositionEnum|string $wildcardPosition = null)
+    public function __construct($field, WildcardPositionEnum|string|null $wildcardPosition = null)
     {
         parent::__construct();
         $this->field = $field;
@@ -21,7 +21,7 @@ class RelativeFilter extends BaseFilter
         $this->wildcardPosition = $wildcardPosition;
     }
 
-    public static function make($field, WildcardPositionEnum|string $wildcardPosition = null)
+    public static function make($field, WildcardPositionEnum|string|null $wildcardPosition = null)
     {
         return new self($field, $wildcardPosition);
     }

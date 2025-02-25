@@ -20,7 +20,7 @@ class TestCase extends Orchestra
         $this->setUpDatabase($this->app);
 
         Factory::guessFactoryNamesUsing(
-            fn (string $modelName) => 'Baro\\PipelineQueryCollection\\Database\\Factories\\' . class_basename($modelName) . 'Factory'
+            fn(string $modelName) => 'Baro\\PipelineQueryCollection\\Database\\Factories\\' . class_basename($modelName) . 'Factory',
         );
     }
 

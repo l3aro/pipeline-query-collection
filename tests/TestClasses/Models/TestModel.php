@@ -64,9 +64,9 @@ class TestModel extends Model
     public function scopeSearch(Builder $query, string $search)
     {
         return $query->where(
-            fn (Builder $query) => $query
+            fn(Builder $query) => $query
                 ->where('name', 'like', "%{$search}%")
-                ->orWhere('id', $search)
+                ->orWhere('id', $search),
         );
     }
 }

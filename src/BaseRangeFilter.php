@@ -5,6 +5,7 @@ namespace Baro\PipelineQueryCollection;
 abstract class BaseRangeFilter extends BaseFilter
 {
     protected ?string $postfix = null;
+
     protected string $operator;
 
     public function __construct($field)

@@ -9,7 +9,7 @@ return [
 
     // Allow the default wildcard position for relative filters to be controlled via .env.
     'relative_wildcard_position' => WildcardPositionEnum::tryFrom(
-        env('PIPELINE_QUERY_COLLECTION_WILDCARD_POSITION', 'both')
+        env('PIPELINE_QUERY_COLLECTION_WILDCARD_POSITION', 'both'),
     ),
 
     // type of postfix for date filters

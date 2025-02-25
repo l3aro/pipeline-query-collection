@@ -10,7 +10,7 @@ class DateToFilter extends BaseFilter
 
     private $postfix = null;
 
-    public function __construct($field = 'created_at', MotionEnum|string $motion = null)
+    public function __construct($field = 'created_at', MotionEnum|string|null $motion = null)
     {
         parent::__construct();
         $this->field = $field;
@@ -23,7 +23,7 @@ class DateToFilter extends BaseFilter
         $this->motion = $motion;
     }
 
-    public static function make($field = 'created_at', MotionEnum|string $motion = null)
+    public static function make($field = 'created_at', MotionEnum|string|null $motion = null)
     {
         return new self($field, $motion);
     }
