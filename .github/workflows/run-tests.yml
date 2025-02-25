@@ -12,14 +12,17 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        php: [8.1, '8.2']
-        laravel: ['10.*', '11.*']
+        php: [8.1, 8.2, 8.3, 8.4]
+        laravel: ['10.*', '11.*', '12.*']
         stability: [prefer-lowest, prefer-stable]
         include:
           - laravel: 10.*
           - laravel: 11.*
+          - laravel: 12.*
         exclude:
           - laravel: 11.*
+            php: 8.1
+          - laravel: 12.*
             php: 8.1
 
     name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }} - ${{ matrix.os }}
@@ -35,6 +38,20 @@ jobs:
         ports:
           - 3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+      postgres:
+        image: postgres:17-alpine
+        restart: unless-stopped
+        healthcheck:
+          test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+          interval: 10s
+          timeout: 5s
+          retries: 5
+        environment:
+          POSTGRES_DB: query_test
+          POSTGRES_USER: user
+          POSTGRES_PASSWORD: secret
+
       redis:
         image: redis
         ports:
@@ -70,6 +87,16 @@ jobs:
           DB_USERNAME: user
           DB_PASSWORD: secret
           DB_PORT: ${{ job.services.mysql.ports[3306] }}
+          REDIS_PORT: 6379
+
+      - name: Execute tests with PostgreSQL
+        run: vendor/bin/pest
+        env:
+          DB_CONNECTION: pgsql
+          DB_DATABASE: query_test
+          DB_USERNAME: user
+          DB_PASSWORD: secret
+          DB_PORT: ${{ job.services.postgres.ports[5432] }}
           REDIS_PORT: 6379
 
       - name: Execute tests with SQLite
