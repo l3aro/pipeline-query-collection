@@ -12,7 +12,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        php: [8.1, '8.2']
+        php: [8.1, 8.2, 8.3, 8.4]
         laravel: ['10.*', '11.*', '12.*']
         stability: [prefer-lowest, prefer-stable]
         include:
@@ -38,6 +38,14 @@ jobs:
         ports:
           - 3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_DB: query_test
+          POSTGRES_USER: user
+          POSTGRES_PASSWORD: secret
+
       redis:
         image: redis
         ports:
@@ -75,9 +83,19 @@ jobs:
           DB_PORT: ${{ job.services.mysql.ports[3306] }}
           REDIS_PORT: 6379
 
+      - name: Execute tests with PostgreSQL
+        run: vendor/bin/pest
+        env:
+          DB_CONNECTION: pgsql
+          DB_DATABASE: query_test
+          DB_USERNAME: user
+          DB_PASSWORD: secret
+          DB_PORT: ${{ job.services.postgres.ports[5432] }}
+          REDIS_PORT: 6379
+
       - name: Execute tests with SQLite
         run: vendor/bin/pest
         env:
           DB_CONNECTION: sqlite
-          DB_DATABASE: :memory:
+          DB_DATABASE: ":memory:"
           REDIS_PORT: 6379
