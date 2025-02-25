@@ -1,9 +1,11 @@
 <?php
 
+use Baro\PipelineQueryCollection\BooleanFilter;
 use Baro\PipelineQueryCollection\DateFromFilter;
 use Baro\PipelineQueryCollection\DateToFilter;
 use Baro\PipelineQueryCollection\Enums\MotionEnum;
 use Baro\PipelineQueryCollection\Enums\WildcardPositionEnum;
+use Baro\PipelineQueryCollection\FieldsRelativeFilter;
 use Baro\PipelineQueryCollection\RelativeFilter;
 use Baro\PipelineQueryCollection\Tests\TestClasses\Models\RelatedModel;
 use Baro\PipelineQueryCollection\Tests\TestClasses\Models\TestModel;
@@ -26,10 +28,14 @@ it('can filter models by boolean value', function () {
     TestModel::factory()->count(4)->create(['is_visible' => false]);
 
     injectRequest(['is_visible' => true]);
-    expect(TestModel::filter()->count())->toBe(3);
+    expect(TestModel::filter([
+        BooleanFilter::make('is_visible'),
+    ])->count())->toBe(3);
 
     injectRequest(['is_visible' => false]);
-    expect(TestModel::filter()->count())->toBe(4);
+    expect(TestModel::filter([
+        BooleanFilter::make('is_visible'),
+    ])->count())->toBe(4);
 });
 
 it('can filter models by date from value', function () {
@@ -40,7 +46,6 @@ it('can filter models by date from value', function () {
     expect(TestModel::filter()->count())->toBe(0);
 
     injectRequest(['created_at_from' => '2020-01-02']);
-    // dump(TestModel::getConnectionResolver()->getDriverName());
     expect(TestModel::filter()->count())->toBe(4);
     expect(TestModel::filter([
         DateFromFilter::make('created_at', MotionEnum::TILL),
@@ -208,4 +213,16 @@ it('can filter model using fixed value', function () {
     expect(TestModel::filter([
         RelativeFilter::make('title')->filterOn('name')->value('Baro'),
     ])->count())->toBe(1);
+});
+
+it('can filter many columns with one field', function () {
+    TestModel::factory()->create(['name' => 'Baro Nil']);
+    TestModel::factory()->create(['name' => 'Baro Joe']);
+    TestModel::factory()->create(['name' => 'Billy Nil']);
+
+    injectRequest(['name' => 'Baro']);
+
+    expect(TestModel::filter([
+        FieldsRelativeFilter::make('name', ['name', 'title']),
+    ])->count())->toBe(2);
 });
