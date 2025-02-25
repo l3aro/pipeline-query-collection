@@ -29,6 +29,7 @@ class TestCase extends Orchestra
         $app['db']->connection()->getSchemaBuilder()->create('test_models', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+            $table->string('title')->nullable();
             $table->unsignedTinyInteger('type_flag')->default(0);
             $table->boolean('is_visible')->default(true);
             $table->unsignedInteger('related_model_id')->nullable();

@@ -216,9 +216,9 @@ it('can filter model using fixed value', function () {
 });
 
 it('can filter many columns with one field', function () {
-    TestModel::factory()->create(['name' => 'Baro Nil']);
-    TestModel::factory()->create(['name' => 'Baro Joe']);
-    TestModel::factory()->create(['name' => 'Billy Nil']);
+    TestModel::factory()->create(['name' => 'Baro', 'title' => 'Nil']);
+    TestModel::factory()->create(['name' => 'Baro', 'title' => 'Joe']);
+    TestModel::factory()->create(['name' => 'Billy', 'title' => 'Nil']);
 
     injectRequest(['name' => 'Baro']);
 
