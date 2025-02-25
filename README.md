@@ -248,6 +248,17 @@ User::query()->filter([
 ]);
 ```
 
+You can also filter multiple columns at once
+```php
+use Baro\PipelineQueryCollection\FieldsRelativeFilter;
+use Baro\PipelineQueryCollection\Enums\WildcardPositionEnum;
+
+// users?search=Baro
+User::query()->filter([
+    FieldsRelativeFilter::make('search', ['name', 'title']), //  where ("name" like '%Baro%' or "title" like '%Baro%')
+]);
+```
+
 #### Scope filter
 
 ```php
